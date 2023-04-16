@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.controller.dto.UserDTO;
 import com.example.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserService extends IService<User> {
 
+    UserDTO login(UserDTO userDTO);
+
+    User register(UserDTO userDTO);// TODO is return User necessary? true or false is better?
 }

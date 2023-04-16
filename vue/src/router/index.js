@@ -8,6 +8,16 @@ Vue.use(VueRouter)
 
 const routes = [
     {
+        path: '/login',
+        name: 'Login',
+        component: () => import('../views/Login.vue')
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: () => import('../views/Register.vue')
+    },
+    {
         path: '/',
         name: 'Manage',
         component: Manage,
@@ -18,13 +28,16 @@ const routes = [
             },
             {
                 path: 'user', name: "用户管理", component:() => import("../views/User.vue")
-            }
+            },
+            {
+                path: '/person', name: '个人信息', component: () => import('../views/Person.vue')
+            },
         ]
     },
     {
         path: '/about',
         name: 'About',
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+        component: () => import('../views/About.vue')
     }
 ]
 

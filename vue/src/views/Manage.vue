@@ -7,7 +7,7 @@
 
     <el-container>
       <el-header style="border-bottom: 1px solid #ccc;">
-        <Header :collapseBtnClass="collapseBtnClass" :collapse="isCollapse" />
+        <Header :collapseBtnClass="collapseBtnClass" :collapse="collapse" />
       </el-header>
 
       <el-main>
