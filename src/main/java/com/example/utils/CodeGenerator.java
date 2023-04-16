@@ -26,7 +26,7 @@ public class CodeGenerator {
                 })
                 .strategyConfig(builder -> {
                     builder.entityBuilder().enableLombok();
-//                    builder.mapperBuilder().enableMapperAnnotation().build();
+//                    builder.mapperBuilder().enableMapperAnnotation().build(); //可以自动生成mapper上的@mapper注解
                     builder.controllerBuilder().enableHyphenStyle()  // 开启驼峰转连字符
                             .enableRestStyle();  // 开启生成@RestController 控制器
                     builder.addInclude("user") // 设置需要生成的表名

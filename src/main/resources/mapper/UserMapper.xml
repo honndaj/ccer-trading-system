@@ -1,45 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.UserMapper">
-
-    <update id="update">
-        update user
-        <set>
-            <if test="company_name != null">
-                company_name = #{company_name},
-            </if>
-            <if test="address != null">
-                address = #{address},
-            </if>
-            <if test="legal_represent != null">
-                legal_represent = #{legal_represent},
-            </if>
-            <if test="company_code != null">
-                company_code = #{company_code},
-            </if>
-            <if test="trade_represent != null">
-                trade_represent = #{trade_represent},
-            </if>
-            <if test="phone != null">
-                phone = #{phone},
-            </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
-            <if test="express_code != null">
-                express_code = #{express_code},
-            </if>
-            <if test="tel != null">
-                tel = #{tel},
-            </if>
-            <if test="fax != null">
-                fax= #{fax},
-            </if>
-        </set>
-        <where>
-            id = #{id}
-        </where>
-    </update>
 
 </mapper>
