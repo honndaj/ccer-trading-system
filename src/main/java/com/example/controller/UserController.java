@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.Constants;
 import com.example.common.Result;
 import com.example.controller.dto.UserDTO;
+import com.example.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -38,7 +39,8 @@ public class UserController {
         if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
             return Result.error(Constants.CODE_400, "参数错误");
         }
-        return Result.success(userService.login(userDTO));
+        UserDTO dto = userService.login(userDTO);
+        return Result.success(dto);
     }
 
     @PostMapping("/register")
@@ -102,6 +104,8 @@ public class UserController {
             queryWrapper.like("address", address);
         }
         queryWrapper.orderByDesc("id");
+//        User currentUser = TokenUtils.getCurrentUser();
+//        System.out.println(currentUser.getCompanyName());
         return Result.success(userService.page(page, queryWrapper));
     }
 }
