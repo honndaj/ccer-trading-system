@@ -2,7 +2,11 @@ package com.example.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.common.Constants;
+import com.example.entity.Dict;
+import com.example.mapper.DictMapper;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author lzq
@@ -25,60 +29,69 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/menu")
-        public class MenuController {
-    
-@Resource
-private IMenuService menuService;
+public class MenuController {
 
-// 新增或者更新
-@PostMapping
-public Result save(@RequestBody Menu menu) {
-    menuService.saveOrUpdate(menu);
+    @Resource
+    private IMenuService menuService;
+
+    @Resource
+    private DictMapper dictMapper;
+
+    // 新增或者更新
+    @PostMapping
+    public Result save(@RequestBody Menu menu) {
+        menuService.saveOrUpdate(menu);
         return Result.success();
-        }
-
-@DeleteMapping("/{id}")
-public Result delete(@PathVariable Integer id) {
-    menuService.removeById(id);
-        return Result.success();
-        }
-
-@PostMapping("/del/batch")
-public Result deleteBatch(@RequestBody List<Integer> ids) {
-    menuService.removeByIds(ids);
-        return Result.success();
-        }
-
-@GetMapping
-public Result findAll(@RequestParam (defaultValue = "") String name) {
-    QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
-    queryWrapper.like("name", name);
-    List<Menu> list = menuService.list(queryWrapper);
-    //找出一级菜单
-    List<Menu> parentNode = list.stream().filter(menu -> menu.getPid() == null).collect(Collectors.toList());
-    for(Menu menu : parentNode) {
-        //子菜单
-        menu.setChildren(list.stream().filter(m -> menu.getId().equals(m.getPid())).collect(Collectors.toList()));
     }
-    return Result.success(parentNode);
-}
 
-@GetMapping("/{id}")
-public Result findOne(@PathVariable Integer id) {
-        return Result.success(menuService.getById(id));
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id) {
+        menuService.removeById(id);
+        return Result.success();
+    }
+
+    @PostMapping("/del/batch")
+    public Result deleteBatch(@RequestBody List<Integer> ids) {
+        menuService.removeByIds(ids);
+        return Result.success();
+    }
+
+    @GetMapping
+    public Result findAll(@RequestParam(defaultValue = "") String name) {
+        QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("name", name);
+        List<Menu> list = menuService.list(queryWrapper);
+        //找出一级菜单
+        List<Menu> parentNode = list.stream().filter(menu -> menu.getPid() == null).collect(Collectors.toList());
+        for (Menu menu : parentNode) {
+            //子菜单
+            menu.setChildren(list.stream().filter(m -> menu.getId().equals(m.getPid())).collect(Collectors.toList()));
         }
+        return Result.success(parentNode);
+    }
 
-@GetMapping("/page")
-public Result findPage(@RequestParam Integer pageNum,
-@RequestParam Integer pageSize,
-                       @RequestParam(defaultValue = "") String name) {
+    @GetMapping("/{id}")
+    public Result findOne(@PathVariable Integer id) {
+        return Result.success(menuService.getById(id));
+    }
+
+    @GetMapping("/page")
+    public Result findPage(@RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String name) {
         QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
         if (!"".equals(name)) {
             queryWrapper.like("name", name);
         }
         return Result.success(menuService.page(new Page<>(pageNum, pageSize), queryWrapper));
-        }
+    }
 
-        }
+    @GetMapping("/icons")
+    public Result getIcons() {
+        QueryWrapper<Dict> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("type", Constants.DICT_TYPE_ICON);
+        return Result.success(dictMapper.selectList(queryWrapper));
+    }
+}
 

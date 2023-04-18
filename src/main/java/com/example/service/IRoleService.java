@@ -2,6 +2,9 @@ package com.example.service;
 
 import com.example.entity.Role;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.entity.RoleMenu;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IRoleService extends IService<Role> {
 
+    void setRoleMenu(Integer roleId, List<Integer> menuIds);
+
+    List<Integer> getRoleMenu(Integer roleId);
 }

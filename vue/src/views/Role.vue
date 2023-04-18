@@ -55,16 +55,20 @@
 
         <el-dialog title="菜单分配" :visible.sync="menuDialogFormVisible" width="30%" style="padding: 0 50px">
             <el-tree :data="menuData"
-                     node-key="id"
                      :props="props"
-                     :default-expanded-keys="[1]"
-                     :default-checked-keys="[10]"
                       show-checkbox
-                      @check-change="handleCheckChange">
+                      node-key="id"
+                      ref="tree"
+                      :default-expanded-keys="expands"
+                      :default-checked-keys="checks"
+                      >
+                      <span class="custom-tree-node" slot-scope="{ node, data }">
+                          <span><i :class="data.icon"></i> {{ data.name }}</span>
+                      </span>
             </el-tree>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="menuDialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="save">确 定</el-button>
+                <el-button type="primary" @click="saveRoleMenu">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -72,7 +76,7 @@
 
 <script>
 export default {
-    name: "User",
+    name: "Role",
     data() {
         return {
             tableData: [],
@@ -87,7 +91,10 @@ export default {
             menuData: [],
             props: {
                 label: 'name'
-            }
+            },
+            expands: [],
+            checks: [],
+            roleId: 0
         }
     },
     created() {
@@ -108,10 +115,20 @@ export default {
         },
         save() {
             this.request.post("/role", this.form).then(res => {
-                console.log(res)
                 if (res.code == '200') {
                     this.$message.success("保存成功")
                     this.dialogFormVisible = false
+                    this.load()
+                } else {
+                    this.$message.error("保存失败")
+                }
+            })
+        },
+        saveRoleMenu() {
+            this.request.post("/role/roleMenu/" + this.roleId, this.$refs.tree.getCheckedKeys()).then(res => {
+                if (res.code == '200') {
+                    this.$message.success("保存成功")
+                    this.menuDialogFormVisible = false
                     this.load()
                 } else {
                     this.$message.error("保存失败")
@@ -167,6 +184,7 @@ export default {
         },
         selectMenu(roleId) {
             this.menuDialogFormVisible = true
+            this.roleId = roleId
             //请求菜单数据
             this.request.get("/menu", {
                 params: {
@@ -174,10 +192,12 @@ export default {
                 }
             }).then(res => {
                 this.menuData = res.data
+                this.expands = this.menuData.map(v => v.id)
             })
-        },
-        handleCheckChange(data, checked, indeterminate) {
-            console.log(data, checked, indeterminate);
+
+            this.request.get("/role/roleMenu/" + roleId).then(res =>{
+                this.checks = res.data
+            })
         }
     }
 }

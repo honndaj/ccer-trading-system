@@ -41,7 +41,9 @@ public class JwtInterceptor implements HandlerInterceptor {
             throw new ServiceException(Constants.CODE_401, "token验证失败，请重新登录");
         }
         // 根据token中的userid查询数据库
+        System.out.println("++++++++++++++++++++++从token中获得用户名，并查数据库++++++++++++++++++");
         User user = userService.getById(userId);
+        System.out.println("++++++++++++++++++++++结束token验证++++++++++++++++++++++++++++++++++");
         if (user == null) {
             throw new ServiceException(Constants.CODE_401, "用户不存在，请重新登录");
         }
