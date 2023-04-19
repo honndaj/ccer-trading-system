@@ -21,6 +21,7 @@
             <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column prop="path" label="路径"></el-table-column>
+            <el-table-column prop="viewPath" label="视图路径"></el-table-column>
             <el-table-column label="图标" class-name="fontSize18" align="center" label-class-name="fontSize12">
                 <template slot-scope="scope">
                 <span :class="scope.row.icon" />
@@ -46,6 +47,9 @@
                 </el-form-item>
                 <el-form-item label="路径">
                     <el-input v-model="form.path" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="视图路径">
+                    <el-input v-model="form.viewPath" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="图标">
                     <el-select clearable v-model="form.icon" placeholder="请选择" style="width: 100%">
@@ -141,7 +145,7 @@ export default {
         delBatch() {
             let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
             this.request.post("/menu/del/batch", ids).then(res => {
-                if (res.data) {
+                if (res.code == '200') {
                     this.$message.success("批量删除成功")
                     this.load()
                 } else {

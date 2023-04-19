@@ -169,7 +169,7 @@ export default {
         delBatch() {
             let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
             this.request.post("/user/del/batch", ids).then(res => {
-                if (res.data) {
+                if (res.code == '200') {
                     this.$message.success("批量删除成功")
                     this.load()
                 } else {

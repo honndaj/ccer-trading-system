@@ -23,7 +23,7 @@
             <el-table-column prop="flag" label="标识"></el-table-column>
             <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
-                    <el-button type="info" @click="selectMenu(scope.row.id)">分配菜单 <i class="el-icon-menu"></i></el-button>
+                    <el-button type="info" @click="selectMenu(scope.row)">分配菜单 <i class="el-icon-menu"></i></el-button>
                     <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
                     <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
                         icon-color="red" title="您确定删除吗？" @confirm="del(scope.row.id)">
@@ -98,7 +98,8 @@ export default {
             },
             expands: [],
             checks: [],
-            roleId: 0
+            roleId: 0,
+            roleFlag: ''
         }
     },
     created() {
@@ -133,7 +134,9 @@ export default {
                 if (res.code == '200') {
                     this.$message.success("保存成功")
                     this.menuDialogFormVisible = false
-                    this.load()
+                    if(this.roleFlag == 'admin') {
+                        this.$store.commit("logout")
+                    }
                 } else {
                     this.$message.error("保存失败")
                 }
@@ -164,7 +167,7 @@ export default {
         delBatch() {
             let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
             this.request.post("/role/del/batch", ids).then(res => {
-                if (res.data) {
+                if (res.code == '200') {
                     this.$message.success("批量删除成功")
                     this.load()
                 } else {
@@ -186,9 +189,10 @@ export default {
             this.pageNum = pageNum
             this.load()
         },
-        selectMenu(roleId) {
+        selectMenu(role) {
             this.menuDialogFormVisible = true
-            this.roleId = roleId
+            this.roleId = role.id
+            this.roleFlag = role.flag
             //请求菜单数据
             this.request.get("/menu", {
                 params: {
@@ -199,7 +203,7 @@ export default {
                 this.expands = this.menuData.map(v => v.id)
             })
 
-            this.request.get("/role/roleMenu/" + roleId).then(res =>{
+            this.request.get("/role/roleMenu/" + role.id).then(res =>{
                 this.checks = res.data
             })
         }
