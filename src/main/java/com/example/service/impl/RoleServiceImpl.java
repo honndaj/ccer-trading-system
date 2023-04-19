@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.entity.Menu;
 import com.example.entity.Role;
 import com.example.entity.RoleMenu;
 import com.example.mapper.RoleMapper;

@@ -6,12 +6,22 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.common.Constants;
 import com.example.controller.dto.UserDTO;
+import com.example.entity.Menu;
 import com.example.entity.User;
 import com.example.exception.ServiceException;
+import com.example.mapper.RoleMapper;
+import com.example.mapper.RoleMenuMapper;
 import com.example.mapper.UserMapper;
+import com.example.service.IMenuService;
 import com.example.service.IUserService;
 import com.example.utils.TokenUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -25,6 +35,15 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     private static final Log LOG = Log.get();
 
+    @Resource
+    private RoleMapper roleMapper;
+
+    @Resource
+    private RoleMenuMapper roleMenuMapper;
+
+    @Resource
+    private IMenuService menuService;
+
     @Override
     public UserDTO login(UserDTO userDTO) {
         User one = getUserInfo(userDTO);
@@ -32,6 +51,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             BeanUtil.copyProperties(one, userDTO, true);
             String token = TokenUtils.genToken(one.getId().toString(), one.getPassword());
             userDTO.setToken(token);
+            String roleFlag = one.getRoleFlag();
+            userDTO.setMenus(getRoleMenus(roleFlag));
+
             return userDTO;
         }else {
             throw new ServiceException(Constants.CODE_600, "用户名或密码错误");
@@ -64,5 +86,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new ServiceException(Constants.CODE_500, "系统错误");
         }
         return one;
+    }
+
+    public List<Menu> getRoleMenus(String roleFlag) {
+        Integer roleId = roleMapper.selectByFlag(roleFlag);
+        List<Integer> menuids = roleMenuMapper.selectByRoleId(roleId);
+        List<Menu> menus = new ArrayList<>();
+        for(Integer id : menuids) {
+            menus.add(menuService.getById(id));
+        }
+        //找出一级菜单
+        List<Menu> parentNodes = menus.stream().filter(menu -> menu.getPid() == null).collect(Collectors.toList());
+        for (Menu menu : parentNodes) {
+            //子菜单
+            menu.setChildren(menus.stream().filter(m -> menu.getId().equals(m.getPid())).collect(Collectors.toList()));
+        }
+        return parentNodes;
     }
 }

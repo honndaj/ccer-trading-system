@@ -20,6 +20,7 @@
             <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column prop="description" label="描述"></el-table-column>
+            <el-table-column prop="flag" label="标识"></el-table-column>
             <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
                     <el-button type="info" @click="selectMenu(scope.row.id)">分配菜单 <i class="el-icon-menu"></i></el-button>
@@ -45,6 +46,9 @@
                 </el-form-item>
                 <el-form-item label="描述">
                     <el-input v-model="form.description" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="标识">
+                    <el-input v-model="form.flag" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

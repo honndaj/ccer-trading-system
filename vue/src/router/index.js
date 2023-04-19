@@ -36,7 +36,7 @@ const routes = [
                 path: 'menu', name: "菜单管理", component:() => import("../views/Menu.vue")
             },
             {
-                path: '/person', name: '个人信息', component: () => import('../views/Person.vue')
+                path: 'person', name: '个人信息', component: () => import('../views/Person.vue')
             },
         ]
     },

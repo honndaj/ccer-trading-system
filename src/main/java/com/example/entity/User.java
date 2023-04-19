@@ -50,5 +50,6 @@ public class User implements Serializable {
 
     private String fax;
 
+    private String roleFlag;
 
 }
