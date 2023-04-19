@@ -15,11 +15,13 @@ import com.example.mapper.UserMapper;
 import com.example.service.IMenuService;
 import com.example.service.IUserService;
 import com.example.utils.TokenUtils;
+import org.apache.xmlbeans.impl.jam.JParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,7 +98,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             menus.add(menuService.getById(id));
         }
         //找出一级菜单
-        List<Menu> parentNodes = menus.stream().filter(menu -> menu.getPid() == null).collect(Collectors.toList());
+        List<Integer> parentNodeIds = new ArrayList<>();
+        for(Menu menu : menus) {
+            if(menu.getPid() == null) {
+                parentNodeIds.add(menu.getId());
+            }
+            else {
+                parentNodeIds.add(menu.getPid());
+            }
+        }
+        //排序加去重
+        parentNodeIds = parentNodeIds.stream()
+                .distinct() // 去重
+                .sorted(Comparator.naturalOrder()) // 自然排序
+                .collect(Collectors.toList());
+
+        List<Menu> parentNodes = new ArrayList<>();
+        for(Integer pid : parentNodeIds) {
+            parentNodes.add(menuService.getById(pid));
+        }
+
         for (Menu menu : parentNodes) {
             //子菜单
             menu.setChildren(menus.stream().filter(m -> menu.getId().equals(m.getPid())).collect(Collectors.toList()));
