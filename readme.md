@@ -1,1 +1,1 @@
-springboot2+Vue2+Element-ui+Mybatis-Plus
+springboot2+Vue2+Element-ui+Mybatis-Plus+JWT+ECharts
