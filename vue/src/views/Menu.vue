@@ -7,7 +7,7 @@
         </div>
 
         <div style="margin: 10px 0">
-            <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
+            <el-button type="primary" @click="handleAdd(null)">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
             <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
                 icon-color="red" title="您确定批量删除吗？" @confirm="delBatch">
                 <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
@@ -96,6 +96,7 @@ export default {
             })
         },
         save() {
+            console.log(this.form);
             this.request.post("/menu", this.form).then(res => {
                 console.log(res)
                 if (res.code == '200') {
@@ -113,9 +114,12 @@ export default {
             if(pid) {
                 this.form.pid = pid
             }
+            this.request.get("/menu/icons").then(res => {
+                this.options = res.data
+            })
         },
         handleEdit(row) {
-            this.form = row
+            this.form = { ...row };
             this.dialogFormVisible = true
             this.request.get("/menu/icons").then(res => {
                 this.options = res.data
