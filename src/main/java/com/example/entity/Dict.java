@@ -3,7 +3,7 @@ package com.example.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-@TableName("dict")
+@TableName("sys_dict")
 @Data
 public class Dict {
     private String name;

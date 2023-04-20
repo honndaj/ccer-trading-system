@@ -3,6 +3,8 @@ package com.example.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -16,6 +18,7 @@ import lombok.Setter;
  * @author lzq
  * @since 2023-04-17
  */
+@TableName("sys_role")
 @Getter
 @Setter
   @ApiModel(value = "Role对象", description = "")

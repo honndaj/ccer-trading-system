@@ -1,12 +1,11 @@
 package com.example.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-import java.util.List;
-
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -18,31 +17,36 @@ import lombok.Setter;
  * </p>
  *
  * @author lzq
- * @since 2023-04-17
+ * @since 2023-04-20
  */
-@TableName("sys_menu")
 @Getter
 @Setter
-  @ApiModel(value = "Menu对象", description = "")
-public class Menu implements Serializable {
+  @TableName("sys_now")
+@ApiModel(value = "Now对象", description = "")
+public class Now implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
-    private String name;
+    private String buySell;
 
-    private String path;
+    private String area;
 
-    private String icon;
+    private String kind;
 
-    private String description;
+    private String method;
 
-    @TableField(exist = false)
-    private List<Menu> children;
+    private BigDecimal price;
 
-    private Integer pid;
+    private Integer count;
 
-    private String viewPath;
+    private String period;
+
+    private BigDecimal bestBid;
+
+    private LocalDateTime createTime;
+
+
 }

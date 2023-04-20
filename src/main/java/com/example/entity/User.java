@@ -3,6 +3,9 @@ package com.example.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.math.BigDecimal;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -16,6 +19,7 @@ import lombok.Setter;
  * @author lzq
  * @since 2023-04-16
  */
+@TableName("sys_user")
 @Getter
 @Setter
   @ApiModel(value = "User对象", description = "")
@@ -29,6 +33,8 @@ public class User implements Serializable {
     private String username;
 
     private String password;
+
+    private BigDecimal money;
 
     private String companyName;
 

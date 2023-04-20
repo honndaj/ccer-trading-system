@@ -24,11 +24,11 @@
             <el-table-column prop="id" label="ID" width="80"></el-table-column>
             <el-table-column prop="username" label="用户名" width="140"></el-table-column>
             <el-table-column prop="roleFlag" label="角色"></el-table-column>
+            <el-table-column prop="money" label="资金"></el-table-column>
             <el-table-column prop="companyName" label="公司名"></el-table-column>
             <el-table-column prop="address" label="地址"></el-table-column>
             <el-table-column prop="legalRepresent" label="法定代表"></el-table-column>
             <el-table-column prop="tradeRepresent" label="交易代表"></el-table-column>
-            <el-table-column prop="email" label="邮箱"></el-table-column>
             <el-table-column label="操作" width="200" align="center">
                 <template slot-scope="scope">
                     <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
@@ -55,6 +55,9 @@
                     <el-select clearable v-model="form.roleFlag" placeholder="请选择角色" style="width: 100%">
                         <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.flag"></el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="资金">
+                    <el-input v-model="form.money" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="公司名">
                     <el-input v-model="form.companyName" autocomplete="off"></el-input>
@@ -134,7 +137,6 @@ export default {
         },
         save() {
             this.request.post("/user", this.form).then(res => {
-                console.log(this.form)
                 if (res.code == '200') {
                     this.$message.success("保存成功")
                     this.dialogFormVisible = false

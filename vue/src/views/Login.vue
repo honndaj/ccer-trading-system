@@ -2,7 +2,8 @@
     <div class="wrapper">
         <div
             style="margin: 200px auto; background-color: #fff; width: 350px; height: 300px; padding: 20px; border-radius: 10px">
-            <div style="margin: 20px 0; text-align: center; font-size: 24px"><b>登 录</b></div>
+            <div style="margin: 5px 0; text-align: center; font-size: 24px"><b>CCER交易系统</b></div>
+            <div style="margin: 5px 0; text-align: center; font-size: 24px"><b>登 录</b></div>
             <el-form :model="user" :rules="rules" ref="userForm">
                 <el-form-item prop="username">
                     <el-input placeholder="请输入账号" size="medium" style="margin: 10px 0" prefix-icon="el-icon-user"
