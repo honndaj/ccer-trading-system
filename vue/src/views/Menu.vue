@@ -28,9 +28,9 @@
                 </template>
             </el-table-column>
             <el-table-column prop="description" label="描述"></el-table-column>
-            <el-table-column label="操作" width="300" align="center">
+            <el-table-column label="操作" width="300" align="right" >
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="handleAdd(scope.row.id)" v-if="!scope.row.pid && !scope.row.path">新增子菜单 <i class="el-icon-plus"></i></el-button>
+                    <el-button type="primary" @click="handleAdd(scope.row.id)" v-if="!scope.row.pid && !scope.row.path">子菜单 <i class="el-icon-plus"></i></el-button>
                     <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
                     <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
                         icon-color="red" title="您确定删除吗？" @confirm="del(scope.row.id)">

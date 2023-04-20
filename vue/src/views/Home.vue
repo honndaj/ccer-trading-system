@@ -1,128 +1,75 @@
 <template>
-  <div>
-    <el-row :gutter="10" style="margin-bottom: 60px">
-      <el-col :span="6">
-        <el-card style="color: #409EFF">
-          <div><i class="el-icon-user-solid" /> 用户总数</div>
-          <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            100
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="6">
-        <el-card style="color: #F56C6C">
-          <div><i class="el-icon-money" /> 销售总量</div>
-          <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            ￥ 1000000
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="6">
-        <el-card style="color: #67C23A">
-          <div><i class="el-icon-bank-card" /> 收益总额</div>
-          <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            ￥ 300000
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="6">
-        <el-card style="color: #E6A23C">
-          <div><i class="el-icon-s-shop" /> 门店总数</div>
-          <div style="padding: 10px 0; text-align: center; font-weight: bold">
-            20
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <div id="main" style="width: 500px; height: 400px"></div>
-      </el-col >
-      <el-col :span="12">
-        <div id="pie" style="width: 500px; height: 400px"></div>
-      </el-col >
-    </el-row>
-  </div>
+    <el-card style="width: 500px; border: 1px solid #ccc">
+        <el-form label-width="80px" size="small">
+            <el-form-item label="用户名">
+                <el-input v-model="form.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="公司名">
+                <el-input v-model="form.companyName" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="地址">
+                <el-input v-model="form.address" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="法定代表">
+                <el-input v-model="form.legalRepresent" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="统一社会信用代码">
+                <el-input v-model="form.companyCode" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="交易代表">
+                <el-input v-model="form.tradeRepresent" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号码">
+                <el-input v-model="form.phone" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱">
+                <el-input v-model="form.email" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="邮编">
+                <el-input v-model="form.expressCode" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="座机电话">
+                <el-input v-model="form.tel" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="传真">
+                <el-input v-model="form.fax" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item style="margin-left: 115px">
+                <el-button type="primary" @click="save">提交修改</el-button>
+            </el-form-item>
+        </el-form>
+    </el-card>
 </template>
 
 <script>
-import * as echarts from 'echarts';
-
 export default {
-  name: "Home",
-  data() {
-    return {
-
-    }
-  },
-  mounted() {
-    var chartDom = document.getElementById('main');
-    var myChart = echarts.init(chartDom);
-    var option;
-
-    option = {
-      xAxis: {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          data: [150, 230, 224, 218, 135, 147, 260],
-          type: 'line'
-        },
-        {
-          data: [150, 230, 224, 218, 135, 147, 260],
-          type: 'bar',
+    name: "Person",
+    data() {
+        return {
+            form:{},
+            user : localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
         }
-      ]
-    };
-    myChart.setOption(option);
-
-    var pieDom = document.getElementById('pie');
-    var pieChart = echarts.init(pieDom);
-    var pieOption;
-
-    pieOption = {
-      title: {
-        text: 'Referer of a Website',
-        subtext: 'Fake Data',
-        left: 'center'
-      },
-      tooltip: {
-        trigger: 'item'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left'
-      },
-      series: [
-        {
-          name: 'Access From',
-          type: 'pie',
-          radius: '50%',
-          data: [
-            { value: 1048, name: 'Search Engine' },
-            { value: 735, name: 'Direct' },
-            { value: 580, name: 'Email' },
-            { value: 484, name: 'Union Ads' },
-            { value: 300, name: 'Video Ads' }
-          ],
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    created() {
+        this.request.get("/user/username/" + this.user.username).then(res => {
+            if (res.code == '200') {
+                this.form = res.data
             }
-          }
+        })
+    },
+    methods: {
+        save() {
+            this.request.post("/user", this.form).then(res => {
+                if (res.data) {
+                    this.$message.success("保存成功")
+                    this.dialogFormVisible = false
+                    this.load()
+                } else {
+                    this.$message.error("保存失败")
+                }
+            })
         }
-      ]
-    };
-    pieChart.setOption(pieOption)
-  }
-
+    }
 }
 </script>
 
