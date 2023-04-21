@@ -56,7 +56,6 @@ public class NowController {
      * @param now
      * @return
      */
-    @Transactional
     @PostMapping("/buy")
     public Result saveBuy(@RequestBody Now now) {
         return Result.success(nowService.saveBuy(now));
@@ -67,13 +66,16 @@ public class NowController {
      *
      * @param pageNum
      * @param pageSize
+     * @param uid
      * @return
      */
     @GetMapping("/buy/page")
     public Result findPageBuy(@RequestParam Integer pageNum,
-                              @RequestParam Integer pageSize) {
+                              @RequestParam Integer pageSize,
+                              @RequestParam Integer uid) {
         QueryWrapper<Now> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("buy_sell", "buy");
+        queryWrapper.ne("uid", uid);
         queryWrapper.orderByDesc("id");
         return Result.success(nowService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }

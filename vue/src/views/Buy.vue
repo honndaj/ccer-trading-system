@@ -85,10 +85,12 @@ export default {
     },
     methods: {
         load() {
+            this.uid = JSON.parse(localStorage.getItem("user")).id
             this.request.get("/now/buy/page", {//获取所有买入申报
                 params: {
                     pageNum: this.pageNum,
                     pageSize: this.pageSize,
+                    uid: this.uid
                 }
             }).then(res => {
                 this.tableData = res.data.records
@@ -96,7 +98,6 @@ export default {
                 this.tableData.forEach((item) => {
                     item.remainTime = this.calculateRemainingTime(item.createTime) + '小时'
                 });
-                this.uid = JSON.parse(localStorage.getItem("user")).id
             })
         },
         handleSelectionChange(val) {
@@ -119,7 +120,7 @@ export default {
                     this.$message.success("申报成功")
                     this.load()
                 } else {
-                    this.$message.error("申报失败")
+                    this.$message.error(res.msg)
                 }
             })
         },

@@ -46,10 +46,10 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
     @Transactional
     @Override
     public boolean saveBuy(Now now) {
-        now.setBuySell("buy");
-        nowMapper.insert(now);
-        if(isMoneyEnough(now.getUid(), now.getCount())) {
-            userService.updateMoney(now.getUid(), now.getPrice().multiply(now.getCount()).negate());
+        if(isMoneyEnough(now.getUid(), now.getCount().multiply(now.getPrice()))) {
+            now.setBuySell("buy");
+            nowMapper.insert(now);
+            userService.saveMoney(now.getUid(), now.getPrice().multiply(now.getCount()).negate());
         }else {
             throw new ServiceException(Constants.CODE_600, "您的资金不足");
         }
@@ -65,10 +65,10 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
         if(isCcerEnough(from, now.getArea(), now.getKind(), now.getCount())) {
             //若足够
             //to就加上ccer
-            ccerService.updateCcer(to, now.getCount());
+            ccerService.saveOrUpdateCcer(to, now.getCount(),now.getArea(), now.getKind());
             //from就减去cccer, 并给from加上money
-            ccerService.updateCcer(from, now.getCount().negate());
-            userService.updateMoney(from, now.getPrice().multiply(now.getCount()));
+            ccerService.saveOrUpdateCcer(from, now.getCount().negate(), now.getArea(), now.getKind());
+            userService.saveMoney(from, now.getPrice().multiply(now.getCount()));
         } else {
             throw new ServiceException(Constants.CODE_600, "您的"+now.getArea()+now.getKind()+"CCER不足");
         }
@@ -92,12 +92,13 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
         queryWrapper.eq("area", area);
         queryWrapper.eq("kind", kind);
         Ccer ccer = ccerService.getOne(queryWrapper);
+        if(ccer == null) return false;
         return ccer.getCount().compareTo(count) >= 0;
     }
 
     private boolean isMoneyEnough(Integer uid, BigDecimal money) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        QueryWrapper<User> id = queryWrapper.eq("id", uid);
+        queryWrapper.eq("id", uid);
          User user = userService.getOne(queryWrapper);
         return user.getMoney().compareTo(money) >= 0;
     }

@@ -15,5 +15,5 @@ import java.math.BigDecimal;
  */
 public interface ICcerService extends IService<Ccer> {
 
-    void updateCcer(Integer to, BigDecimal count);
+    void saveOrUpdateCcer(Integer to, BigDecimal count, String area, String kind);
 }

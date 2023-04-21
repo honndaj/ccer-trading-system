@@ -26,10 +26,21 @@ public class CcerServiceImpl extends ServiceImpl<CcerMapper, Ccer> implements IC
     CcerMapper ccerMapper;
 
     @Override
-    public void updateCcer(Integer to, BigDecimal count) {
-        UpdateWrapper<Ccer> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.setSql("count = count + " + count)
-                .eq("uid", to);
-        ccerMapper.update(null, updateWrapper);
+    public void saveOrUpdateCcer(Integer to, BigDecimal count, String area, String kind) {
+        //先判断有无
+        Ccer ccer = ccerMapper.selectOne(new QueryWrapper<Ccer>().eq("uid", to).eq("area",area).eq("kind", kind));
+        if(ccer != null) {
+            UpdateWrapper<Ccer> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.setSql("count = count + " + count)
+                    .eq("uid", to).eq("area",area).eq("kind", kind);
+            ccerMapper.update(null, updateWrapper);
+        }else {
+            ccer = new Ccer();
+            ccer.setArea(area);
+            ccer.setKind(kind);
+            ccer.setCount(count);
+            ccer.setUid(to);
+            ccerMapper.insert(ccer);
+        }
     }
 }

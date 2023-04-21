@@ -20,5 +20,5 @@ public interface IUserService extends IService<User> {
 
     User register(UserDTO userDTO);// TODO is return User necessary? true or false is better?
 
-    void updateMoney(Integer uid, BigDecimal negate);
+    void saveMoney(Integer uid, BigDecimal negate);
 }

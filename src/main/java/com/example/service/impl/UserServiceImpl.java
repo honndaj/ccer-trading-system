@@ -131,7 +131,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public void updateMoney(Integer uid, BigDecimal num) {
+    public void saveMoney(Integer uid, BigDecimal num) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         updateWrapper.setSql("money = money + " + num)
                 .eq("id", uid);

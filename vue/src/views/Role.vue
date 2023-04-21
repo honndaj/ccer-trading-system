@@ -134,9 +134,6 @@ export default {
                 if (res.code == '200') {
                     this.$message.success("保存成功")
                     this.menuDialogFormVisible = false
-                    if(this.roleFlag == 'admin') {
-                        this.$store.commit("logout")
-                    }
                 } else {
                     this.$message.error("保存失败")
                 }
