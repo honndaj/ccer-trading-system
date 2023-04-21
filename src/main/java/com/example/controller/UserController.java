@@ -105,7 +105,6 @@ public class UserController {
         if (!"".equals(address)) {
             queryWrapper.like("address", address);
         }
-        queryWrapper.orderByDesc("id");
         return Result.success(userService.page(page, queryWrapper));
     }
 }

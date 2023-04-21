@@ -5,6 +5,7 @@ import com.example.common.Constants;
 import com.example.entity.Ccer;
 import com.example.entity.History;
 import com.example.entity.Now;
+import com.example.entity.User;
 import com.example.exception.ServiceException;
 import com.example.mapper.CcerMapper;
 import com.example.mapper.NowMapper;
@@ -42,10 +43,17 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
     @Resource
     IHistoryService historyService;
 
-
+    @Transactional
     @Override
-    public void saveBuy(Now now) {
-        nowMapper.saveBuy(now);
+    public boolean saveBuy(Now now) {
+        now.setBuySell("buy");
+        nowMapper.insert(now);
+        if(isMoneyEnough(now.getUid(), now.getCount())) {
+            userService.updateMoney(now.getUid(), now.getPrice().multiply(now.getCount()).negate());
+        }else {
+            throw new ServiceException(Constants.CODE_600, "您的资金不足");
+        }
+        return true;
     }
 
     @Transactional
@@ -85,5 +93,12 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
         queryWrapper.eq("kind", kind);
         Ccer ccer = ccerService.getOne(queryWrapper);
         return ccer.getCount().compareTo(count) >= 0;
+    }
+
+    private boolean isMoneyEnough(Integer uid, BigDecimal money) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<User> id = queryWrapper.eq("id", uid);
+         User user = userService.getOne(queryWrapper);
+        return user.getMoney().compareTo(money) >= 0;
     }
 }

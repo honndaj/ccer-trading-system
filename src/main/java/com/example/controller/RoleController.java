@@ -64,7 +64,6 @@ public class RoleController {
                            @RequestParam Integer pageSize,
                            @RequestParam(defaultValue = "") String name) {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("id");
         if (!"".equals(name)) {
             queryWrapper.like("name", name);
         }

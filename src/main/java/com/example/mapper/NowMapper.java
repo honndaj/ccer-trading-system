@@ -16,7 +16,4 @@ import java.util.List;
  * @since 2023-04-20
  */
 public interface NowMapper extends BaseMapper<Now> {
-
-    @Insert("insert into sys_now (uid, buy_sell, area, kind, price, count) values(#{uid}, 'buy', #{area}, #{kind}, #{price}, #{count})")
-    void saveBuy(Now now);
 }

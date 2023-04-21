@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface INowService extends IService<Now> {
 
-   void saveBuy(Now now);
+   boolean saveBuy(Now now);
 
     boolean buyTrade(Integer id, Integer from, Integer to);
 }

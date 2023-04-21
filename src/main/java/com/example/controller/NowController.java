@@ -43,11 +43,9 @@ public class NowController {
     }
 
     @Transactional
-    @PostMapping("/buy")//TODO 余额不足没处理&可以不用手写sql，对now set一下buyorsell即可
+    @PostMapping("/buy")
     public Result saveBuy(@RequestBody Now now) {
-        nowService.saveBuy(now);
-        userService.updateMoney(now.getUid(), now.getPrice().multiply(now.getCount()).negate());
-        return Result.success();
+        return Result.success(nowService.saveBuy(now));
     }
 
     @GetMapping("/buy/page")
@@ -55,6 +53,7 @@ public class NowController {
                               @RequestParam Integer pageSize) {
         QueryWrapper<Now> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("buy_sell", "buy");
+        queryWrapper.orderByDesc("id");
         return Result.success(nowService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 

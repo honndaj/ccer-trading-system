@@ -16,7 +16,7 @@
         </el-table>
         <div style="padding: 10px 0">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum"
-                :page-sizes="[10]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+                :page-sizes="[2,5,10]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
         <el-card class="box-card">
