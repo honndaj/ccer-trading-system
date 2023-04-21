@@ -35,6 +35,14 @@ public class NowController {
     @Resource
     private IUserService userService;
 
+    /**
+     * 在买入大厅，对其中的买入申报进行回应，即卖出
+     *
+     * @param id
+     * @param from
+     * @param to
+     * @return
+     */
     @GetMapping("/buy/trade")
     public Result buyTrade(@RequestParam Integer id,
                            @RequestParam Integer from,
@@ -42,12 +50,25 @@ public class NowController {
         return Result.success(nowService.buyTrade(id, from, to));
     }
 
+    /**
+     * 在买入大厅，发布买入申报
+     *
+     * @param now
+     * @return
+     */
     @Transactional
     @PostMapping("/buy")
     public Result saveBuy(@RequestBody Now now) {
         return Result.success(nowService.saveBuy(now));
     }
 
+    /**
+     * 获取买入大厅的买入申报数据
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/buy/page")
     public Result findPageBuy(@RequestParam Integer pageNum,
                               @RequestParam Integer pageSize) {

@@ -52,7 +52,7 @@
               this.$message.error("两次输入的密码不一致")
               return false
             }
-            this.request.post("/user/register", this.user).then(res => {
+            this.request.post("/auth/register", this.user).then(res => {
               if(res.code === '200') {
                 this.$message.success("注册成功")
               } else {
