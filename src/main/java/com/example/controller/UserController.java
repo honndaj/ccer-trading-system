@@ -106,8 +106,6 @@ public class UserController {
             queryWrapper.like("address", address);
         }
         queryWrapper.orderByDesc("id");
-//        User currentUser = TokenUtils.getCurrentUser();
-//        System.out.println(currentUser.getCompanyName());
         return Result.success(userService.page(page, queryWrapper));
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="margin: 10px 0">
+        <div>
             <el-input style="width: 200px" placeholder="请输入用户名" suffix-icon="el-icon-search" v-model="username"></el-input>
             <el-input style="width: 200px" placeholder="请输入公司名" suffix-icon="el-icon-message" class="ml-5"
                 v-model="companyName"></el-input>
@@ -18,6 +18,7 @@
             </el-popconfirm>
         </div>
 
+        <!-- <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'" -->
         <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"
             @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
@@ -131,7 +132,7 @@ export default {
                 this.total = res.data.total
             })
 
-            this.request.get("/role").then(res => {
+            this.request.get("/role").then(res => {//获取dialog中的
                 this.roles = res.data
             })
         },

@@ -30,21 +30,17 @@ public class Now implements Serializable {
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
+    private Integer uid;
+
     private String buySell;
 
     private String area;
 
     private String kind;
 
-    private String method;
-
     private BigDecimal price;
 
-    private Integer count;
-
-    private String period;
-
-    private BigDecimal bestBid;
+    private BigDecimal count;
 
     private LocalDateTime createTime;
 

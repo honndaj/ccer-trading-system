@@ -3,6 +3,7 @@ package com.example.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.common.Constants;
 import com.example.controller.dto.UserDTO;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -45,6 +47,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Resource
     private IMenuService menuService;
+
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public UserDTO login(UserDTO userDTO) {
@@ -123,5 +128,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             menu.setChildren(menus.stream().filter(m -> menu.getId().equals(m.getPid())).collect(Collectors.toList()));
         }
         return parentNodes;
+    }
+
+    @Override
+    public void updateMoney(Integer uid, BigDecimal num) {
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.setSql("money = money + " + num)
+                .eq("id", uid);
+        userMapper.update(null, updateWrapper);
     }
 }

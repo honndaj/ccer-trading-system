@@ -30,9 +30,9 @@ public class History implements Serializable {
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
-    private Integer from;
+    private Integer ccerFrom;
 
-    private Integer to;
+    private Integer ccerTo;
 
     private String area;
 
@@ -40,7 +40,7 @@ public class History implements Serializable {
 
     private BigDecimal price;
 
-    private Integer count;
+    private BigDecimal count;
 
     private LocalDateTime createTime;
 

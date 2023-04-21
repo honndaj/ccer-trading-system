@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="margin: 10px 0">
+        <div>
             <el-input style="width: 200px" placeholder="名称" suffix-icon="el-icon-search" v-model="name"></el-input>
             <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
             <el-button type="warning" @click="reset">重置</el-button>
@@ -23,7 +23,7 @@
             <el-table-column prop="flag" label="标识"></el-table-column>
             <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
-                    <el-button type="info" @click="selectMenu(scope.row)">分配菜单 <i class="el-icon-menu"></i></el-button>
+                    <el-button type="info" @click="selectMenu(scope.row)">分配权限 <i class="el-icon-menu"></i></el-button>
                     <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
                     <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
                         icon-color="red" title="您确定删除吗？" @confirm="del(scope.row.id)">
@@ -57,7 +57,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="菜单分配" :visible.sync="menuDialogFormVisible" width="30%" style="padding: 0 50px">
+        <el-dialog title="权限分配" :visible.sync="menuDialogFormVisible" width="30%" style="padding: 0 50px">
             <el-tree :data="menuData"
                      :props="props"
                       show-checkbox

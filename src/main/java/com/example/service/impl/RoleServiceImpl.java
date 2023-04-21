@@ -30,11 +30,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Transactional//保证原子性
     @Override
     public void setRoleMenu(Integer roleId, List<Integer> menuIds) {
-
-//        QueryWrapper<RoleMenu> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("role_id", roleId);
-//        roleMenuMapper.delete(queryWrapper);
-
         roleMenuMapper.deleteByRoleId(roleId);
         for(Integer id : menuIds) {
             roleMenuMapper.insert(new RoleMenu(roleId, id));
