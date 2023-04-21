@@ -1,0 +1,93 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.el-button--primary {
+    background-color: #00B8D4;
+    border-color: #00B8D4;
+  }
+  
+  .el-button--primary:hover {
+    background-color: #00A3BF;
+    border-color: #00A3BF;
+  }
+  
+  .el-button--primary:focus,
+  .el-button--primary:active {
+    background-color: #008EAA;
+    border-color: #008EAA;
+  }
+  /* Error */
+.el-button--danger {
+    background-color: #D32F2F;
+    border-color: #D32F2F;
+  }
+  
+  .el-button--danger:hover {
+    background-color: #C62828;
+    border-color: #C62828;
+  }
+  
+  .el-button--danger:focus,
+  .el-button--danger:active {
+    background-color: #B71C1C;
+    border-color: #B71C1C;
+  }
+  
+  /* Warning */
+  .el-button--warning {
+    background-color: #AB47BC;
+    border-color: #AB47BC;
+  }
+  
+  .el-button--warning:hover {
+    background-color: #9C3FAF;
+    border-color: #9C3FAF;
+  }
+  
+  .el-button--warning:focus,
+  .el-button--warning:active {
+    background-color: #8D37A2;
+    border-color: #8D37A2;
+  }
+  
+  /* 其他按钮 */
+  .el-button--other {
+    background-color: #50E3C2;
+    border-color: #50E3C2;
+  }
+  
+  .el-button--other:hover {
+    background-color: #43D2AF;
+    border-color: #43D2AF;
+  }
+  
+  .el-button--other:focus,
+  .el-button--other:active {
+    background-color: #36C19C;
+    border-color: #36C19C;
+  }
+  
+  
+  
+
+
+.ml-5 {
+    margin-left: 5px;
+}
+.mr-5 {
+    margin-right: 5px;
+}
+.pd-10 {
+    padding: 10px 0;
+}
+.m-10 {
+    margin: 10px 0;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}

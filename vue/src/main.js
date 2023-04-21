@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import './assets/gloable.css'
+import './assets/global_style.css'
 import request from "@/utils/request";
 import store from './store'
 
