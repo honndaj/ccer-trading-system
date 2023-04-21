@@ -86,6 +86,15 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
         return true;
     }
 
+    @Transactional
+    @Override
+    public boolean withDraw(Integer id) {
+        Now now = getById(id);
+        userService.saveMoney(now.getUid(), now.getPrice().multiply(now.getCount()));
+        removeById(id);
+        return true;
+    }
+
     private boolean isCcerEnough(Integer uid, String area, String kind, BigDecimal count) {
         QueryWrapper<Ccer> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("uid", uid);

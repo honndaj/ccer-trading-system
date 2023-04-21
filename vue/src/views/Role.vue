@@ -18,9 +18,9 @@
             @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="name" label="名称"></el-table-column>
-            <el-table-column prop="description" label="描述"></el-table-column>
-            <el-table-column prop="flag" label="标识"></el-table-column>
+            <el-table-column prop="name" label="角色名"></el-table-column>
+            <el-table-column prop="description" label="具体功能"></el-table-column>
+            <el-table-column prop="flag" label="唯一标识符"></el-table-column>
             <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
                     <el-button type="info" @click="selectMenu(scope.row)">分配权限 <i class="el-icon-menu"></i></el-button>

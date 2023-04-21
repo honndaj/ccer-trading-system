@@ -3,8 +3,6 @@ package com.example.service;
 import com.example.entity.Now;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
-
 /**
  * <p>
  *  服务类
@@ -15,7 +13,9 @@ import java.util.List;
  */
 public interface INowService extends IService<Now> {
 
-   boolean saveBuy(Now now);
+    boolean saveBuy(Now now);
 
     boolean buyTrade(Integer id, Integer from, Integer to);
+
+    boolean withDraw(Integer id);
 }

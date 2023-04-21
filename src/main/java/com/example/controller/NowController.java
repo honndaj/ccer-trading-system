@@ -2,8 +2,6 @@ package com.example.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.service.IUserService;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,9 +29,6 @@ public class NowController {
 
     @Resource
     private INowService nowService;
-
-    @Resource
-    private IUserService userService;
 
     /**
      * 在买入大厅，对其中的买入申报进行回应，即卖出
@@ -89,8 +84,7 @@ public class NowController {
 
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
-        nowService.removeById(id);
-        return Result.success();
+        return Result.success(nowService.withDraw(id));
     }
 
     @PostMapping("/del/batch")
@@ -111,8 +105,18 @@ public class NowController {
 
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,
-                           @RequestParam Integer pageSize) {
+                           @RequestParam Integer pageSize,
+                           @RequestParam String area,
+                           @RequestParam String kind,
+                           @RequestParam Integer uid) {
         QueryWrapper<Now> queryWrapper = new QueryWrapper<>();
+        if (!"".equals(area)) {
+            queryWrapper.like("area", area);
+        }
+        if (!"".equals(kind)) {
+            queryWrapper.like("kind", kind);
+        }
+        queryWrapper.eq("uid", uid);
         queryWrapper.orderByDesc("id");
         return Result.success(nowService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }

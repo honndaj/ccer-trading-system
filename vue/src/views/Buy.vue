@@ -65,7 +65,7 @@
 import moment from 'moment';
 
 export default {
-    name: "User",
+    name: "Buy",
     data() {
         return {
             tableData: [],
@@ -73,8 +73,6 @@ export default {
             pageNum: 1,
             pageSize: 10,
             form: {},
-            dialogFormVisible: false,
-            multipleSelection: [],
             uid: 0,
             areaNames: ['北京', '天津', '上海', '深圳', '广州', '湖北', '重庆'],
             kindNames: ['树林', '风能', '太阳能', '水电', '生物质发电']
