@@ -31,6 +31,51 @@ public class NowController {
     private INowService nowService;
 
     /**
+     * 在卖出大厅，对其中的卖出申报进行回应，即买入
+     *
+     * @param id
+     * @param from
+     * @param to
+     * @return
+     */
+    @GetMapping("/sell/trade")
+    public Result sellTrade(@RequestParam Integer id,
+                           @RequestParam Integer from,
+                           @RequestParam Integer to) {
+        return Result.success(nowService.sellTrade(id, from, to));
+    }
+
+    /**
+     * 在卖出大厅，发布卖出申报
+     *
+     * @param now
+     * @return
+     */
+    @PostMapping("/sell")
+    public Result saveSell(@RequestBody Now now) {
+        return Result.success(nowService.saveSell(now));
+    }
+
+    /**
+     * 获取卖出大厅的卖出申报数据
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param uid
+     * @return
+     */
+    @GetMapping("/sell/page")
+    public Result findPageSell(@RequestParam Integer pageNum,
+                              @RequestParam Integer pageSize,
+                              @RequestParam Integer uid) {
+        QueryWrapper<Now> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("buy_sell", "sell");
+        queryWrapper.ne("uid", uid);
+        queryWrapper.orderByDesc("id");
+        return Result.success(nowService.page(new Page<>(pageNum, pageSize), queryWrapper));
+    }
+
+    /**
      * 在买入大厅，对其中的买入申报进行回应，即卖出
      *
      * @param id
@@ -75,16 +120,21 @@ public class NowController {
         return Result.success(nowService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
+    @DeleteMapping("/buy/{id}")
+    public Result deleteBuy(@PathVariable Integer id) {
+        return Result.success(nowService.withDrawMoney(id));
+    }
+
+    @DeleteMapping("/sell/{id}")
+    public Result deleteSell(@PathVariable Integer id) {
+        return Result.success(nowService.withDrawCcer(id));
+    }
+
     // 新增或者更新
     @PostMapping
     public Result save(@RequestBody Now now) {
         nowService.saveOrUpdate(now);
         return Result.success();
-    }
-
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Integer id) {
-        return Result.success(nowService.withDraw(id));
     }
 
     @PostMapping("/del/batch")

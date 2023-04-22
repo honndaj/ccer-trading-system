@@ -13,9 +13,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface INowService extends IService<Now> {
 
+    boolean saveSell(Now now);
+
+    boolean sellTrade(Integer id, Integer from, Integer to);
+
     boolean saveBuy(Now now);
 
     boolean buyTrade(Integer id, Integer from, Integer to);
 
-    boolean withDraw(Integer id);
+    boolean withDrawMoney(Integer id);
+
+    boolean withDrawCcer(Integer id);
 }

@@ -10,7 +10,7 @@
             <el-table-column prop="remainTime" label="剩余时间"></el-table-column>
             <el-table-column label="操作" width="200" align="center">
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="sell(scope.row)">卖出<i class="el-icon-sold-out"></i></el-button>
+                    <el-button type="primary" @click="sell(scope.row)">买入<i class="el-icon-sold-out"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -21,8 +21,8 @@
         </div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>CCER买入申报填写</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="apply">申报买入</el-button>
+                <span>CCER卖出申报填写</span>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="apply">申报卖出</el-button>
             </div>
             <el-form>
 
@@ -65,7 +65,7 @@
 import moment from 'moment';
 
 export default {
-    name: "Buy",
+    name: "Sell",
     data() {
         return {
             tableData: [],
@@ -84,7 +84,7 @@ export default {
     methods: {
         load() {
             this.uid = JSON.parse(localStorage.getItem("user")).id
-            this.request.get("/now/buy/page", {//获取所有买入申报
+            this.request.get("/now/sell/page", {//获取所有买入申报
                 params: {
                     pageNum: this.pageNum,
                     pageSize: this.pageSize,
@@ -113,7 +113,7 @@ export default {
         },
         apply() {
             this.form.uid = this.uid
-            this.request.post('/now/buy', this.form).then(res => {
+            this.request.post('/now/sell', this.form).then(res => {
                 if (res.code == '200') {
                     this.$message.success("申报成功")
                     this.load()
@@ -135,12 +135,12 @@ export default {
             if(row.uid == this.uid) {
                 this.$message.error("无法和自己进行交易")
             } else {
-                this.request.get('/now/buy/trade',{
+                this.request.get('/now/sell/trade',{
                 params: {
                     //from表示ccer卖出方
                     id: row.id,
-                    from: this.uid,
-                    to: row.uid
+                    from: row.uid,
+                    to: this.uid
                 }}).then(res => {
                     if(res.code == '200') {
                         this.$message.success("交易成功")

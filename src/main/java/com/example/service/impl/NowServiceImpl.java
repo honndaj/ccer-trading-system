@@ -45,6 +45,39 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
 
     @Transactional
     @Override
+    public boolean saveSell(Now now) {
+        if(isCcerEnough(now.getUid(), now.getArea(), now.getKind(), now.getCount())) {
+            now.setBuySell("sell");
+            nowMapper.insert(now);
+            ccerService.saveOrUpdateCcer(now.getUid(),  now.getCount().negate(), now.getArea(), now.getKind());
+        }else {
+            throw new ServiceException(Constants.CODE_600, "您的CCER不足");
+        }
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean sellTrade(Integer id, Integer from, Integer to) {
+        //获取当前订单信息
+        Now now = nowMapper.selectById(id);
+        //检测to money是否足够
+        if(isMoneyEnough(to,now.getCount().multiply(now.getPrice()))) {
+            //若足够
+            //from就加上money
+            userService.saveMoney(from, now.getPrice().multiply(now.getCount()));
+            //to就减去money, 并给to加上ccer
+            userService.saveMoney(to, now.getPrice().multiply(now.getCount()).negate());
+            ccerService.saveOrUpdateCcer(to, now.getCount(), now.getArea(), now.getKind());
+        } else {
+            throw new ServiceException(Constants.CODE_600, "您的资金不足");
+        }
+        addHistory(now, from, to);
+        return true;
+    }
+
+    @Transactional
+    @Override
     public boolean saveBuy(Now now) {
         if(isMoneyEnough(now.getUid(), now.getCount().multiply(now.getPrice()))) {
             now.setBuySell("buy");
@@ -72,25 +105,24 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
         } else {
             throw new ServiceException(Constants.CODE_600, "您的"+now.getArea()+now.getKind()+"CCER不足");
         }
-        //删掉now
-        nowMapper.deleteById(id);
-        //加入histroy
-        History history = new History();
-        history.setCcerFrom(from);
-        history.setCcerTo(to);
-        history.setArea(now.getArea());
-        history.setKind(now.getKind());
-        history.setPrice(now.getPrice());
-        history.setCount(now.getCount());
-        historyService.save(history);
+        addHistory(now, from, to);
         return true;
     }
 
     @Transactional
     @Override
-    public boolean withDraw(Integer id) {
+    public boolean withDrawMoney(Integer id) {
         Now now = getById(id);
         userService.saveMoney(now.getUid(), now.getPrice().multiply(now.getCount()));
+        removeById(id);
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean withDrawCcer(Integer id) {
+        Now now = getById(id);
+        ccerService.saveOrUpdateCcer(now.getUid(), now.getCount(), now.getArea(), now.getKind());
         removeById(id);
         return true;
     }
@@ -110,5 +142,19 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
         queryWrapper.eq("id", uid);
          User user = userService.getOne(queryWrapper);
         return user.getMoney().compareTo(money) >= 0;
+    }
+
+    private void addHistory(Now now, Integer from, Integer to) {
+        //删掉now
+        nowMapper.deleteById(now.getId());
+        //加入histroy
+        History history = new History();
+        history.setCcerFrom(from);
+        history.setCcerTo(to);
+        history.setArea(now.getArea());
+        history.setKind(now.getKind());
+        history.setPrice(now.getPrice());
+        history.setCount(now.getCount());
+        historyService.save(history);
     }
 }

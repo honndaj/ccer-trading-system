@@ -12,7 +12,7 @@
             <el-button type="warning" @click="reset">重置</el-button>
         </div>
 
-        <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"
+        <el-table :data="tableData" border :header-cell-class-name="'headerBg'"
             @selection-change="handleSelectionChange" style="margin-top: 20px;" :row-class-name="tableRowClassName">
             <el-table-column prop="id" label="申报编号" width="80"></el-table-column>
             <el-table-column prop="buySell" label="申报类型" :formatter="formatBuySell"></el-table-column>
@@ -23,7 +23,7 @@
             <el-table-column prop="remainTime" label="剩余时间"></el-table-column>
             <el-table-column label="操作" width="200" align="center">
                 <template slot-scope="scope">
-                    <el-button type="warning" @click="del(scope.row.id)">撤销<i class="el-icon-sold-out"></i></el-button>
+                    <el-button type="warning" @click="del(scope.row)">撤销<i class="el-icon-sold-out"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -79,13 +79,14 @@ export default {
                 });
             })
         },
-        del(id) {
-            this.request.delete("/now/" + id).then(res => {
+        del(row) {
+            console.log("/now/" + row.buySell + "/" + row.id);
+            this.request.delete("/now/" + row.buySell + "/" + row.id).then(res => {
                 if (res.code == '200') {
-                    this.$message.success("删除成功")
+                    this.$message.success("撤销成功")
                     this.load()
                 } else {
-                    this.$message.error("删除失败")
+                    this.$message.error("撤销失败")
                 }
             })
         },
@@ -125,26 +126,26 @@ export default {
                 return cellValue;
             }
         },
-        tableRowClassName({row, rowIndex}) {
-        if (row.buySell === 'buy') {
-          return 'warning-row';
-        } else if (row.buySell === 'sell') {
-          return 'success-row';
+        tableRowClassName({ row, rowIndex }) {
+            if (row.buySell === 'sell') {
+                return 'warning-row';
+            } else if(row.buySell === 'buy') {
+                return 'success-row';
+            }else return '';
         }
-        return '';
-      }
     }
 }
 </script>
 
 <style>
- .el-table .warning-row {
+.el-table .warning-row {
     background: oldlace;
-  }
+}
 
-  .el-table .success-row {
+.el-table .success-row {
     background: #f0f9eb;
-  }
+}
+
 .headerBg {
     background: #eee !important;
 }
