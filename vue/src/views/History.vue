@@ -1,38 +1,35 @@
 <template>
     <div>
-        <div>
-            <el-input style="width: 200px" placeholder="请输入用户名" suffix-icon="el-icon-search" v-model="username"></el-input>
-            <el-input style="width: 200px" placeholder="请输入公司名" suffix-icon="el-icon-message" class="ml-5"
-                v-model="companyName"></el-input>
-            <el-input style="width: 200px" placeholder="请输入地址" suffix-icon="el-icon-position" class="ml-5"
-                v-model="address"></el-input>
+        <el-select clearable v-model="area" placeholder="请选择地区" style="width: 10%;">
+                <el-option v-for="item in areaNames" :key="item" :label="item" :value="item"></el-option>
+            </el-select>
+            <el-select clearable v-model="kind" placeholder="请选择种类" style="width: 10%; margin-left: 10px;">
+                <el-option v-for="item in kindNames" :key="item" :label="item" :value="item"></el-option>
+            </el-select>
+
             <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
             <el-button type="warning" @click="reset">重置</el-button>
-        </div>
 
         <div style="margin: 10px 0">
-            <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
             <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
                 icon-color="red" title="您确定批量删除吗？" @confirm="delBatch">
                 <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
             </el-popconfirm>
         </div>
 
-        <!-- <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'" -->
         <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"
             @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="id" label="ID" width="80"></el-table-column>
-            <el-table-column prop="username" label="用户名" width="140"></el-table-column>
-            <el-table-column prop="roleFlag" label="角色"></el-table-column>
-            <el-table-column prop="money" label="资金"></el-table-column>
-            <el-table-column prop="companyName" label="公司名"></el-table-column>
-            <el-table-column prop="address" label="地址"></el-table-column>
-            <el-table-column prop="legalRepresent" label="法定代表"></el-table-column>
-            <el-table-column prop="tradeRepresent" label="交易代表"></el-table-column>
+            <el-table-column type="selection"></el-table-column>
+            <el-table-column prop="id" label="ID"></el-table-column>
+            <el-table-column prop="ccerFrom" label="CCER转出用户ID"></el-table-column>
+            <el-table-column prop="ccerTo" label="CCER转入用户ID"></el-table-column>
+            <el-table-column prop="area" label="地区"></el-table-column>
+            <el-table-column prop="kind" label="种类"></el-table-column>
+            <el-table-column prop="price" label="申报价格"></el-table-column>
+            <el-table-column prop="count" label="数量（吨）"></el-table-column>
+            <el-table-column prop="createTime" label="完成交易时间"></el-table-column>
             <el-table-column label="操作" width="200" align="center">
                 <template slot-scope="scope">
-                    <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
                     <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
                         icon-color="red" title="您确定删除吗？" @confirm="del(scope.row.id)">
                         <el-button type="danger" slot="reference">删除 <i class="el-icon-remove-outline"></i></el-button>
@@ -46,59 +43,12 @@
                 :total="total">
             </el-pagination>
         </div>
-
-        <el-dialog title="用户信息" :visible.sync="dialogFormVisible" width="30%">
-            <el-form label-width="80px" size="small">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.username" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="角色">
-                    <el-select clearable v-model="form.roleFlag" placeholder="请选择角色" style="width: 100%">
-                        <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.flag"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="资金">
-                    <el-input v-model="form.money" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="公司名">
-                    <el-input v-model="form.companyName" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="法定代表">
-                    <el-input v-model="form.legalRepresent" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="统一社会信用代码">
-                    <el-input v-model="form.companyCode" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="交易代表">
-                    <el-input v-model="form.tradeRepresent" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="手机号码">
-                    <el-input v-model="form.phone" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱">
-                    <el-input v-model="form.email" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="邮编">
-                    <el-input v-model="form.expressCode" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="座机电话">
-                    <el-input v-model="form.tel" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="save">确 定</el-button>
-            </div>
-        </el-dialog>
     </div>
 </template>
 
 <script>
 export default {
-    name: "User",
+    name: "History",
     data() {
         return {
             tableData: [],
@@ -111,7 +61,10 @@ export default {
             form: {},
             dialogFormVisible: false,
             multipleSelection: [],
-            roles: []
+            areaNames: ['北京', '天津', '上海', '深圳', '广州', '湖北', '重庆'],
+            kindNames: ['树林', '风能', '太阳能', '水电', '生物质发电'],
+            area: "",
+            kind: ""
         }
     },
     created() {
@@ -119,45 +72,20 @@ export default {
     },
     methods: {
         load() {
-            this.request.get("/user/page", {
+            this.request.get("/history/page", {
                 params: {
                     pageNum: this.pageNum,
                     pageSize: this.pageSize,
-                    username: this.username,
-                    companyName: this.companyName,
-                    address: this.address
+                    area: this.area,
+                    kind: this.kind
                 }
             }).then(res => {
                 this.tableData = res.data.records
                 this.total = res.data.total
             })
-
-            this.request.get("/role").then(res => {//获取dialog中的
-                this.roles = res.data
-            })
-        },
-        save() {
-            this.request.post("/user", this.form).then(res => {
-                if (res.code == '200') {
-                    this.$message.success("保存成功")
-                    this.dialogFormVisible = false
-                    this.load()
-                } else {
-                    this.$message.error("保存失败")
-                }
-            })
-        },
-        handleAdd() {
-            this.dialogFormVisible = true,
-                this.form = {}
-        },
-        handleEdit(row) {
-            this.form = row
-            this.dialogFormVisible = true
-
         },
         del(id) {
-            this.request.delete("/user/" + id).then(res => {
+            this.request.delete("/history/" + id).then(res => {
                 if (res.code == '200') {
                     this.$message.success("删除成功")
                     this.load()
@@ -171,7 +99,7 @@ export default {
         },
         delBatch() {
             let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
-            this.request.post("/user/del/batch", ids).then(res => {
+            this.request.post("/history/del/batch", ids).then(res => {
                 if (res.code == '200') {
                     this.$message.success("批量删除成功")
                     this.load()
@@ -181,9 +109,8 @@ export default {
             })
         },
         reset() {
-            this.username = "",
-                this.companyName = "",
-                this.address = ""
+            this.area = ""
+            this.kind = ""
             this.load();
         },
         handleSizeChange(pageSize) {

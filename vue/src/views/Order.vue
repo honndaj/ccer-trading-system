@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
     name: "Order",
     data() {
@@ -72,6 +74,9 @@ export default {
             }).then(res => {
                 this.tableData = res.data.records
                 this.total = res.data.total
+                this.tableData.forEach((item) => {
+                    item.remainTime = this.calculateRemainingTime(item.createTime) + '小时'
+                });
             })
         },
         del(id) {
@@ -83,6 +88,15 @@ export default {
                     this.$message.error("删除失败")
                 }
             })
+        },
+        // 将 createTime 转为 剩余有效时间
+        calculateRemainingTime(createTime) {
+            const createMoment = moment(createTime);
+            createMoment.add(1, "days");
+            const now = moment();
+            const remaining = moment.duration(createMoment.diff(now));
+            const remainingHours = remaining.hours();
+            return remainingHours;
         },
         reset() {
             this.area = "",

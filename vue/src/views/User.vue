@@ -18,7 +18,6 @@
             </el-popconfirm>
         </div>
 
-        <!-- <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'" -->
         <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"
             @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
