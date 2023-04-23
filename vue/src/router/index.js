@@ -34,7 +34,7 @@ export const setRoutes = ()  => {
     const storeMenus = localStorage.getItem("menus")
     if(storeMenus) {
         const menus = JSON.parse(storeMenus)
-        const manageRoute = {path: '/', name: "Manage",component: Manage, redirect: "/home", children: []}
+        const manageRoute = {path: '/', name: "Manage",component: Manage, redirect: "/login", children: []}
         menus.forEach(item => {
             if(item.path) {
                 let itemMenu = {path: item.path.replace("/", ""), name: item.name,

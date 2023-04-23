@@ -10,7 +10,6 @@ public interface Constants {
 
     String DICT_TYPE_ICON = "icon";
 
-    String ROLE_ADMIN = "admin";
-    String ROLE_USER = "user";
-
+    String[] STRING_AREA = { "北京", "天津", "上海", "深圳", "广州", "湖北", "重庆" };
+    String[] STRING_KIND = { "树林", "风能", "太阳能", "水电", "生物质发电" };
 }

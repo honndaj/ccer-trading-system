@@ -4,6 +4,8 @@ import com.example.entity.Ccer;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -16,4 +18,8 @@ import java.math.BigDecimal;
 public interface ICcerService extends IService<Ccer> {
 
     void saveOrUpdateCcer(Integer to, BigDecimal count, String area, String kind);
+
+    List<Map<String, Object>> ccerArea(Integer uid);
+
+    List<Map<String, Object>> ccerKind(Integer uid);
 }
