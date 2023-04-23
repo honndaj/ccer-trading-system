@@ -1,5 +1,6 @@
 package com.example;
 
+import cn.hutool.core.util.StrUtil;
 import com.example.entity.Now;
 import com.example.service.INowService;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +26,11 @@ public class CcerTradingSystemApplication {
             Duration duration = Duration.between(now.getCreateTime(), nowTime);
             long days = duration.toDays();
             if(days > 0) {
-                nowService.removeById(now.getId());
+                if(StrUtil.equals(now.getBuySell(), "buy")) {
+                    nowService.withDrawMoney(now.getId());
+                }else {
+                    nowService.withDrawCcer(now.getId());
+                }
                 count++;
             }
         }
