@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.HistoryMapper">
 
+    <resultMap id="objectListResultMap" type="java.util.List">
+        <result column="date" javaType="java.lang.Object"/>
+        <result column="area" javaType="java.lang.Object"/>
+        <result column="weighted_avg_price" javaType="java.lang.Object"/>
+    </resultMap>
+
+    <select id="selectWeightedAvgPrice" resultType="java.util.HashMap">
+        SELECT
+            DATE(create_time) AS date,
+            area,
+            SUM(price * count) / SUM(count) AS weighted_avg_price
+        FROM
+            sys_history
+        WHERE
+            DATE(create_time) >= '2023-01-01' AND DATE(create_time) &lt;= '2023-03-31'
+        GROUP BY
+            DATE(create_time),
+            area;
+
+    </select>
+
 </mapper>

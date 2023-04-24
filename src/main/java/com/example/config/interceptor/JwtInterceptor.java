@@ -42,6 +42,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
         // 根据token中的userid查询数据库
         System.out.println("++++++++++++++++++++++从token中获得用户名，并查数据库++++++++++++++++++");
+        System.out.println("Request URI: " + request.getRequestURI());
         User user = userService.getById(userId);
         System.out.println("++++++++++++++++++++++结束token验证++++++++++++++++++++++++++++++++++");
         if (user == null) {

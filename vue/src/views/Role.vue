@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <el-input style="width: 200px" placeholder="名称" suffix-icon="el-icon-search" v-model="name"></el-input>
+            <el-input style="width: 200px" placeholder="角色名" suffix-icon="el-icon-search" v-model="name"></el-input>
             <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
             <el-button type="warning" @click="reset">重置</el-button>
         </div>
@@ -23,7 +23,7 @@
             <el-table-column prop="flag" label="唯一标识符"></el-table-column>
             <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
-                    <el-button type="info" @click="selectMenu(scope.row)">分配权限 <i class="el-icon-menu"></i></el-button>
+                    <el-button type="info" @click="selectMenu(scope.row)">权限 <i class="el-icon-menu"></i></el-button>
                     <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
                     <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
                         icon-color="red" title="您确定删除吗？" @confirm="del(scope.row.id)">
@@ -41,13 +41,13 @@
 
         <el-dialog title="角色信息" :visible.sync="dialogFormVisible" width="30%">
             <el-form label-width="80px" size="small">
-                <el-form-item label="名称">
+                <el-form-item label="角色名">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="描述">
+                <el-form-item label="具体功能">
                     <el-input v-model="form.description" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="标识">
+                <el-form-item label="唯一标识符">
                     <el-input v-model="form.flag" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>

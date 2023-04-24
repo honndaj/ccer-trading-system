@@ -44,9 +44,11 @@
                 </el-card>
             </el-col>
             <el-col style="margin-left: 12px;" :span="3">
-                <el-card shadow="always">
-                    剩余可用资金：<br />{{ this.form.money }} ¥
-                </el-card>
+                <el-row>
+                    <el-card shadow="always">
+                        剩余可用资金：<br />{{ this.form.money }} ¥
+                    </el-card>
+                </el-row>
             </el-col>
             <el-col style="margin-left: 30px;" :span="6">
                 <el-row>
