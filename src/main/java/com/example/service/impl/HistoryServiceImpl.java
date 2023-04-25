@@ -50,4 +50,13 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History> impl
         }
         return areaLatest;
     }
+
+    @Override
+    public List<Map<String, Object>> getKindCount() {
+        List<Map<String, Object>> kindCount = new ArrayList<>();
+        for(String area : Constants.STRING_KIND) {
+            kindCount.add(historyMapper.getKindCount(area));
+        }
+        return kindCount;
+    }
 }

@@ -92,11 +92,12 @@ export default {
         this.request.get("/echarts/ccerArea/" + this.user.id).then(res => {
             if (res.code == '200') {
                 this.areaData = res.data
+                console.log(this.areaData);
+
             }
             var areaPieOption = {
                 title: {
                     text: '所拥有各地区CCER量',
-                    // subtext: 'Fake Data',
                     left: 'center'
                 },
                 tooltip: {
@@ -108,7 +109,6 @@ export default {
                 },
                 series: [
                     {
-                        name: 'Access From',
                         type: 'pie',
                         radius: '50%',
                         data: this.areaData,
@@ -137,7 +137,6 @@ export default {
             var kindPieOption = {
                 title: {
                     text: '所拥有各种类CCER量',
-                    // subtext: 'Fake Data',
                     left: 'center'
                 },
                 tooltip: {
@@ -149,7 +148,6 @@ export default {
                 },
                 series: [
                     {
-                        name: 'Access From',
                         type: 'pie',
                         radius: '50%',
                         data: this.kindData,

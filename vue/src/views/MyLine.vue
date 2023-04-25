@@ -1,17 +1,18 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="10"><div id="line" style="width: 500px; height: 400px"></div></el-col>
-            <el-col :span="3">
-                <div>
-                    <el-row v-for="(row, index) in tableData" :key="index">
-                        <el-col>
-                            <el-card>
-                                <div>{{ row.area }} - {{ row.price }}</div>
-                            </el-card>
-                        </el-col>
-                    </el-row>
-                </div>
+            <el-col :span="10">
+                <div id="line" style="width: 500px; height: 400px"></div>
+            </el-col>
+            <el-col :span="11">
+                <div id="kindPie" style="width: 431px; height: 345px"></div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="8" v-for="(row, index) in tableData" :key="index">
+                <el-card>
+                    <div>{{ row.area }} - {{ row.price }}</div>
+                </el-card>
             </el-col>
         </el-row>
     </div>
@@ -26,6 +27,7 @@ export default {
         return {
             lineData: [],
             tableData: [],
+            kindData: [],
             bj: [],
             tj: [],
             sh: [],
@@ -44,6 +46,7 @@ export default {
         clearInterval(this.timer); // 清除定时器
     },
     mounted() {
+        //line
         var lineChartDom = document.getElementById('line');
         var lineChart = echarts.init(lineChartDom);
 
@@ -102,11 +105,49 @@ export default {
                 lineChart.setOption(option)
             }
         });
+
+        //pie kind
+        var kindPieDom = document.getElementById('kindPie');
+        var kindPieChart = echarts.init(kindPieDom);
+
+        this.request.get("/echarts/pieKind/").then(res => {
+            if (res.code == '200') {
+                this.kindData = res.data
+            }
+            var kindPieOption = {
+                title: {
+                    text: '各种类CCER交易总量量',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        radius: '50%',
+                        data: this.kindData,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            kindPieChart.setOption(kindPieOption)
+
+        })
     },
     methods: {
         async fetchTableData() {
             try {
-                console.log(this.tableData);
                 const response = await this.request.get('/echarts/table');
                 this.tableData = response.data;
             } catch (error) {

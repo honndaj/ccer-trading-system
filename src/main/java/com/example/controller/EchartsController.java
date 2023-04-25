@@ -42,7 +42,11 @@ public class EchartsController {
 
     @GetMapping("/table")
     public Result getTableData() {
-        System.out.println(historyService.getAreaLatest());
         return Result.success(historyService.getAreaLatest());
+    }
+
+    @GetMapping("/pieKind")
+    public Result gePieKindData() {
+        return Result.success(historyService.getKindCount());
     }
 }

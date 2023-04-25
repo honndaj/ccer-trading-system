@@ -20,5 +20,8 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     @Select("select area , price from sys_history where area = #{areaName} order by create_time DESC limit 1")
     Map<String, Object> getLatestByArea(String areaName);
+
+    @Select("select kind as name, sum(count) as value from sys_history where kind = #{kind}")
+    Map<String, Object> getKindCount(String kind);
 }
 

@@ -19,4 +19,6 @@ public interface IHistoryService extends IService<History> {
     List<List<Object>> getLineData();
 
     List<Map<String, Object>> getAreaLatest();
+
+    List<Map<String, Object>>  getKindCount();
 }
