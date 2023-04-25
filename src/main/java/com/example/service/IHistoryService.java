@@ -21,4 +21,8 @@ public interface IHistoryService extends IService<History> {
     List<Map<String, Object>> getAreaLatest();
 
     List<Map<String, Object>>  getKindCount();
+
+    List<Map<String, Object>> getCountDay(String area, String kind);
+
+    List<Map<String, Object>> getCountMonth(String area, String kind);
 }

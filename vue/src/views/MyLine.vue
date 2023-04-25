@@ -116,7 +116,7 @@ export default {
             }
             var kindPieOption = {
                 title: {
-                    text: '各种类CCER交易总量量',
+                    text: '各种类CCER交易总量',
                     left: 'center'
                 },
                 tooltip: {

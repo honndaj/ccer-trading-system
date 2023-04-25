@@ -8,9 +8,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.time.YearMonth;
 
 /**
  * <p>
@@ -58,5 +62,62 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History> impl
             kindCount.add(historyMapper.getKindCount(area));
         }
         return kindCount;
+    }
+
+    @Override
+    public List<Map<String, Object>> getCountDay(String area, String kind) {
+        //返回最近一周的数据
+//        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.of(2023, 3, 31);
+        LocalDate oneWeekAgo = today.minusDays(6);
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (LocalDate date = oneWeekAgo; !date.isAfter(today); date = date.plusDays(1)) {
+            Map<String, Object> dailyData = new HashMap<>();
+            dailyData.put("name", getDayOfWeekAbbreviation(date));
+            dailyData.put("value", historyMapper.getDay(convertLocalDateToTimestamp(date), area, kind));
+            result.add(dailyData);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<Map<String, Object>> getCountMonth(String area, String kind) {
+        // 返回最近12个月的数据
+        LocalDate today = LocalDate.of(2023, 3, 31);
+        LocalDate twelveMonthsAgo = today.minusMonths(11).withDayOfMonth(1);
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (LocalDate date = twelveMonthsAgo; !date.isAfter(today); date = date.plusMonths(1)) {
+            YearMonth currentMonth = YearMonth.from(date);
+            int totalDaysInMonth = currentMonth.lengthOfMonth();
+            LocalDate lastDayOfMonth = date.withDayOfMonth(totalDaysInMonth);
+
+            Map<String, Object> monthlyData = new HashMap<>();
+            monthlyData.put("name", currentMonth.toString());
+            monthlyData.put("value", historyMapper.getMonthlyCount(
+                    convertLocalDateToTimestamp(date),
+                    convertLocalDateToTimestamp(lastDayOfMonth),
+                    area, kind));
+            result.add(monthlyData);
+        }
+
+        return result;
+    }
+
+    public String getDayOfWeekAbbreviation(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E", Locale.ENGLISH);
+        return date.format(formatter);
+    }
+
+    public Timestamp convertLocalDateToTimestamp(LocalDate date) {
+        // 将 LocalDate 转换为 LocalDateTime，默认时间为 00:00:00
+        LocalDateTime dateTime = date.atTime(LocalTime.MIDNIGHT);
+
+        // 将 LocalDateTime 转换为 Timestamp
+        return Timestamp.valueOf(dateTime);
     }
 }

@@ -4,10 +4,7 @@ import com.example.common.Result;
 import com.example.service.ICcerService;
 import com.example.service.IHistoryService;
 import com.example.service.IUserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -46,7 +43,17 @@ public class EchartsController {
     }
 
     @GetMapping("/pieKind")
-    public Result gePieKindData() {
+    public Result getPieKindData() {
         return Result.success(historyService.getKindCount());
+    }
+
+    @GetMapping("/barDay")
+    public Result getCountDay(@RequestParam String area, @RequestParam String kind) {
+        return Result.success(historyService.getCountDay(area, kind));
+    }
+
+    @GetMapping("/barMonth")
+    public Result getCountMonth(@RequestParam String area, @RequestParam String kind) {
+        return Result.success(historyService.getCountMonth(area, kind));
     }
 }
