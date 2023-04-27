@@ -97,7 +97,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History> impl
             LocalDate lastDayOfMonth = date.withDayOfMonth(totalDaysInMonth);
 
             Map<String, Object> monthlyData = new HashMap<>();
-            monthlyData.put("name", currentMonth.toString());
+            monthlyData.put("name", currentMonth.format(DateTimeFormatter.ofPattern("MMM")));
             monthlyData.put("value", historyMapper.getMonthlyCount(
                     convertLocalDateToTimestamp(date),
                     convertLocalDateToTimestamp(lastDayOfMonth),

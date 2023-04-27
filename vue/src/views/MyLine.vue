@@ -8,6 +8,11 @@
                 <div id="kindPie" style="width: 431px; height: 345px"></div>
             </el-col>
         </el-row>
+        <el-row>
+            <div>
+                <el-tag style="font-size: 20px;">{{ currentTime }} 实时CCER交易价格</el-tag>
+            </div>
+        </el-row>
         <el-row :gutter="20">
             <el-col :span="8" v-for="(row, index) in tableData" :key="index">
                 <el-card>
@@ -35,15 +40,18 @@ export default {
             gz: [],
             hb: [],
             cq: [],
-
+            currentTime: new Date().toLocaleString()
         };
     },
     created() {
         this.fetchTableData();
-        this.timer = setInterval(this.fetchTableData, 3000); // 每隔3秒请求新数据
+        this.timer = setInterval(() => {
+            this.fetchTableData();
+            this.currentTime = new Date().toLocaleString();
+        }, 1000);
     },
     beforeDestroy() {
-        clearInterval(this.timer); // 清除定时器
+        clearInterval(this.timer);
     },
     mounted() {
         //line
@@ -154,7 +162,7 @@ export default {
                 console.error('Error fetching table data:', error);
             }
         }
-    }
+    },
 };
 </script>
 

@@ -1,30 +1,38 @@
 <template>
-    <div style="width: 200px">
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span>选择CCER的地区和种类</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="submitAreaAndKind">提交</el-button>
-            </div>
-            <el-form>
+    <div>
+        <el-row>
+            <el-col :span="12">
+                <div id="barDay" style="width: 431px; height: 345px"></div>
+            </el-col>
+            <el-col :span="12">
+                <div id="barMonth" style="width: 431px; height: 345px"></div>
+            </el-col>
+        </el-row>
+        <el-row style="width: 300px; margin-left: 30px;">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>选择CCER的地区和种类</span>
+                    <el-button style="float: right; padding: 3px 0" type="text" @click="submitAreaAndKind">查 询</el-button>
+                </div>
+                <el-form>
 
-                <el-row>
-                    <el-form-item label="地区">
-                        <el-select clearable v-model="form.area" placeholder="请选择地区" style="width: 50%;">
-                            <el-option v-for="item in areaNames" :key="item" :label="item" :value="item"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-row>
-                <el-row>
-                    <el-form-item label="种类">
-                        <el-select clearable v-model="form.kind" placeholder="请选择种类" style="width: 50%;">
-                            <el-option v-for="item in kindNames" :key="item" :label="item" :value="item"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-row>
-            </el-form>
-        </el-card>
-        <div id="barDay" style="width: 431px; height: 345px"></div>
-        <div id="barMonth" style="width: 431px; height: 345px"></div>
+                    <el-row>
+                        <el-form-item label="地区">
+                            <el-select clearable v-model="form.area" placeholder="请选择地区" style="width: 50%;">
+                                <el-option v-for="item in areaNames" :key="item" :label="item" :value="item"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-row>
+                    <el-row>
+                        <el-form-item label="种类">
+                            <el-select clearable v-model="form.kind" placeholder="请选择种类" style="width: 50%;">
+                                <el-option v-for="item in kindNames" :key="item" :label="item" :value="item"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-row>
+                </el-form>
+            </el-card>
+        </el-row>
     </div>
 </template>
 
@@ -92,6 +100,10 @@ export default {
                     xAxis: {
                         type: 'category',
                         data: res.data.map(item => item.name),
+                        axisLabel: {
+                            interval: 0, // 设置为0，以显示所有标签
+                            rotate: 45, // 如果标签重叠，您可以尝试旋转标签
+                        },
                     },
                     yAxis: {
                         type: 'value',
