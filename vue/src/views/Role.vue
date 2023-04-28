@@ -20,7 +20,7 @@
             <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="name" label="角色名"></el-table-column>
             <el-table-column prop="description" label="具体功能"></el-table-column>
-            <el-table-column prop="flag" label="唯一标识符"></el-table-column>
+            <el-table-column prop="uniqueKey" label="唯一标识符"></el-table-column>
             <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
                     <el-button type="info" @click="selectMenu(scope.row)">权限 <i class="el-icon-menu"></i></el-button>
@@ -48,7 +48,7 @@
                     <el-input v-model="form.description" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="唯一标识符">
-                    <el-input v-model="form.flag" autocomplete="off"></el-input>
+                    <el-input v-model="form.uniqueKey" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -99,7 +99,7 @@ export default {
             expands: [],
             checks: [],
             roleId: 0,
-            roleFlag: ''
+            uniqueKey: ''
         }
     },
     created() {
@@ -189,7 +189,7 @@ export default {
         selectMenu(role) {
             this.menuDialogFormVisible = true
             this.roleId = role.id
-            this.roleFlag = role.flag
+            this.uniqueKey = role.uniqueKey
             //请求菜单数据
             this.request.get("/menu", {
                 params: {

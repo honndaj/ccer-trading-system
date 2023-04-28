@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +32,6 @@ public class Role implements Serializable {
 
     private String description;
 
-    private String flag;
+    private String uniqueKey;
 
 }

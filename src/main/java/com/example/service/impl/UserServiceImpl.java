@@ -58,8 +58,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             BeanUtil.copyProperties(one, userDTO, true);
             String token = TokenUtils.genToken(one.getId().toString(), one.getPassword());
             userDTO.setToken(token);
-            String roleFlag = one.getRoleFlag();
-            userDTO.setMenus(getRoleMenus(roleFlag));
+            String uniqueKey = one.getUniqueKey();
+            userDTO.setMenus(getRoleMenus(uniqueKey));
 
             return userDTO;
         }else {
@@ -95,8 +95,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return one;
     }
 
-    public List<Menu> getRoleMenus(String roleFlag) {
-        Integer roleId = roleMapper.selectByFlag(roleFlag);
+    public List<Menu> getRoleMenus(String uniqueKey) {
+        Integer roleId = roleMapper.selectByUniqueKey(uniqueKey);
         List<Integer> menuids = roleMenuMapper.selectByRoleId(roleId);
         List<Menu> menus = new ArrayList<>();
         for(Integer id : menuids) {

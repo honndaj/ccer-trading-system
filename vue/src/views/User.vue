@@ -53,7 +53,7 @@
                 </el-form-item>
                 <el-form-item label="角色">
                     <el-select clearable v-model="form.roleFlag" placeholder="请选择角色" style="width: 100%">
-                        <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.flag"></el-option>
+                        <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.uniqueKey"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="资金">
