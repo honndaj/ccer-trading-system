@@ -27,7 +27,7 @@
             <el-table-column prop="kind" label="种类"></el-table-column>
             <el-table-column prop="price" label="申报价格"></el-table-column>
             <el-table-column prop="count" label="数量（吨）"></el-table-column>
-            <el-table-column prop="createTime" label="完成交易时间"></el-table-column>
+            <el-table-column prop="createTime" label="完成交易时间" width="160px"></el-table-column>
             <el-table-column label="操作" width="200" align="center">
                 <template slot-scope="scope">
                     <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
@@ -99,7 +99,7 @@ export default {
         },
         delBatch() {
             let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
-            this.request.post("/history/del/batch", ids).then(res => {
+            this.request.post("/history/del/multi", ids).then(res => {
                 if (res.code == '200') {
                     this.$message.success("批量删除成功")
                     this.load()

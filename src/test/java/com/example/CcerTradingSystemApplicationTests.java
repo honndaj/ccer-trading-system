@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.common.Constants;
+import com.example.common.SystemString;
 import com.example.entity.History;
 import com.example.service.IHistoryService;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -30,8 +29,8 @@ class CcerTradingSystemApplicationTests {
 
     @Test
     void generatorHistory() {
-        for(String area : Constants.STRING_AREA) {
-            for(String kind : Constants.STRING_KIND) {
+        for(String area : SystemString.STRING_AREA) {
+            for(String kind : SystemString.STRING_KIND) {
                 LocalDateTime start = LocalDateTime.of(2022, 4, 1, 0, 0, 0);
                 LocalDateTime end = LocalDateTime.of(2023, 3, 31, 0, 0, 0);
 

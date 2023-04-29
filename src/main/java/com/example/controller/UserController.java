@@ -1,12 +1,8 @@
 package com.example.controller;
 
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.common.Constants;
 import com.example.common.Result;
-import com.example.controller.dto.UserDTO;
-import com.example.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -41,7 +37,6 @@ public class UserController {
         return Result.success(userService.getOne(queryWrapper));
     }
 
-    // 新增或者更新
     @PostMapping
     public Result save(@RequestBody User user) {
         return Result.success(userService.saveOrUpdate(user));

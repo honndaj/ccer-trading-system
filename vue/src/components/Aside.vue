@@ -10,23 +10,20 @@
     <div style="height: 60px; line-height: 60px; text-align: center">
       <b style="color: white">CCER交易系统</b>
     </div>
-    <div v-for="item in menus" :key="item.id">
-      <div v-if="item.path">
-        <el-menu-item :index="item.path">
-          <i :class="item.icon"></i>
-          <span slot="title">{{ item.name }}</span>
+    <div v-for="parentNode in parentNodes" :key="parentNode.id">
+      <div v-if="parentNode.path">
+        <el-menu-item :index="parentNode.path">
+          <i :class="parentNode.icon"></i> <span slot="title">{{ parentNode.name }}</span>
         </el-menu-item>
       </div>
       <div v-else>
-        <el-submenu :index="item.id + ''">
+        <el-submenu :index="parentNode.id + ''">
           <template slot="title">
-            <i :class="item.icon"></i>
-            <span slot="title">{{ item.name }}</span>
+            <i :class="parentNode.icon"></i> <span slot="title">{{ parentNode.name }}</span>
           </template>
-          <div  v-for="subItem in item.children" :key="subItem.id">
-            <el-menu-item :index="subItem.path">
-              <i :class="subItem.icon"></i>
-              <span slot="title">{{ subItem.name }}</span>
+          <div  v-for="childNode in parentNode.children" :key="childNode.id">
+            <el-menu-item :index="childNode.path">
+              <i :class="childNode.icon"></i> <span slot="title">{{ childNode.name }}</span>
             </el-menu-item>
           </div>
         </el-submenu>
@@ -44,7 +41,7 @@ export default {
   },
   data() {
     return {
-      menus: localStorage.getItem("menus") ? JSON.parse(localStorage.getItem("menus")) : [],
+      parentNodes: localStorage.getItem("menus") ? JSON.parse(localStorage.getItem("menus")) : [],
       opens: localStorage.getItem("menus") ? JSON.parse(localStorage.getItem("menus")).map(v => v.id + '') : []
     }
   }

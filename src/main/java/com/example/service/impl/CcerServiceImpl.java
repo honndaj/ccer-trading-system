@@ -2,7 +2,7 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.example.common.Constants;
+import com.example.common.SystemString;
 import com.example.entity.Ccer;
 import com.example.mapper.CcerMapper;
 import com.example.service.ICcerService;
@@ -51,7 +51,7 @@ public class CcerServiceImpl extends ServiceImpl<CcerMapper, Ccer> implements IC
     @Override
     public List<Map<String, Object>> ccerArea(Integer uid) {
         List<Map<String, Object>> dataList = new ArrayList<>();
-        for(String areaName : Constants.STRING_AREA) {
+        for(String areaName : SystemString.STRING_AREA) {
             Map<String, Object> data = new HashMap<>();
             data.put("name", areaName);
             data.put("value", ccerMapper.sumByArea(areaName) != null ? ccerMapper.sumByArea(areaName) : 0);
@@ -63,7 +63,7 @@ public class CcerServiceImpl extends ServiceImpl<CcerMapper, Ccer> implements IC
     @Override
     public List<Map<String, Object>> ccerKind(Integer uid) {
         List<Map<String, Object>> dataList = new ArrayList<>();
-        for(String kindName : Constants.STRING_KIND) {
+        for(String kindName : SystemString.STRING_KIND) {
             Map<String, Object> data = new HashMap<>();
             data.put("name", kindName);
             data.put("value", ccerMapper.sumByKind(kindName) != null ? ccerMapper.sumByKind(kindName) : 0);

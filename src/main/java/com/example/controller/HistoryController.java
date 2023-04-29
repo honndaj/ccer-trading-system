@@ -30,7 +30,6 @@ public class HistoryController {
     @Resource
     private IHistoryService historyService;
 
-    // 新增或者更新
     @PostMapping
     public Result save(@RequestBody History history) {
         historyService.saveOrUpdate(history);
@@ -43,8 +42,8 @@ public class HistoryController {
         return Result.success();
     }
 
-    @PostMapping("/del/batch")
-    public Result deleteBatch(@RequestBody List<Integer> ids) {
+    @PostMapping("/del/multi")
+    public Result deleteMultiple(@RequestBody List<Integer> ids) {
         historyService.removeByIds(ids);
         return Result.success();
     }

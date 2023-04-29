@@ -35,37 +35,36 @@ export const setRoutes = ()  => {
     if(storeMenus) {
         const menus = JSON.parse(storeMenus)
         const manageRoute = {path: '/', name: "Manage",component: Manage, redirect: "/login", children: []}
-        menus.forEach(item => {
-            if(item.path) {
-                let itemMenu = {path: item.path.replace("/", ""), name: item.name,
-                component: () => import ('../views/' + item.viewPath + '.vue')}
-                manageRoute.children.push(itemMenu)
-            }else if(item.children.length) {
-                item.children.forEach(item => {
-                    if(item.path) {
-                        let itemMenu = {path: item.path.replace("/", ""), name: item.name,
-                        component: () => import ('../views/' + item.viewPath + '.vue')}
-                        manageRoute.children.push(itemMenu)
+        menus.forEach(menu => {
+            if(menu.path) {
+                let parentMenu = {path: menu.path.replace("/", ""), name: menu.name,
+                component: () => import ('../views/' + menu.viewPath + '.vue')}
+                manageRoute.children.push(parentMenu)
+            }else if(menu.children.length) {
+                menu.children.forEach(menu => {
+                    if(menu.path) {
+                        let childMenu = {path: menu.path.replace("/", ""), name: menu.name,
+                        component: () => import ('../views/' + menu.viewPath + '.vue')}
+                        manageRoute.children.push(childMenu)
                     }
                 })
             }
         })
-        const currentRouteNames = router.getRoutes().map(v => v.name)
-        if(!currentRouteNames.includes("Manage"))
+
+        if(!router.getRoutes().map(v => v.name).includes("Manage"))
         router.addRoute(manageRoute)
     }
 }
 
 setRoutes()
 
-// 路由守卫
-router.beforeEach((to, from, next) => {//to是要前往的路由对象，name属性定义在router.js中
+router.beforeEach((to, from, next) => {
     localStorage.setItem("currentPathName", to.name)
-    store.commit("setPath")  // 触发store的数据更新
+    store.commit("setPath")
     if(!to.matched.length) {
         const storeMenus = localStorage.getItem("menus")
         if(storeMenus) {
-            next('/404')  // 放行路由
+            next('/404')
         }else {
             next("/login")
         }

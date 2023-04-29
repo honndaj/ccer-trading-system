@@ -1,6 +1,6 @@
 package com.example.service.impl;
 
-import com.example.common.Constants;
+import com.example.common.SystemString;
 import com.example.entity.History;
 import com.example.mapper.HistoryMapper;
 import com.example.service.IHistoryService;
@@ -49,7 +49,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History> impl
     @Override
     public List<Map<String, Object>> getAreaLatest() {
         List<Map<String, Object>> areaLatest = new ArrayList<>();
-        for(String area : Constants.STRING_AREA) {
+        for(String area : SystemString.STRING_AREA) {
             areaLatest.add(historyMapper.getLatestByArea(area));
         }
         return areaLatest;
@@ -58,7 +58,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History> impl
     @Override
     public List<Map<String, Object>> getKindCount() {
         List<Map<String, Object>> kindCount = new ArrayList<>();
-        for(String area : Constants.STRING_KIND) {
+        for(String area : SystemString.STRING_KIND) {
             kindCount.add(historyMapper.getKindCount(area));
         }
         return kindCount;

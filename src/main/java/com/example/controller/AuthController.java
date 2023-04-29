@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.example.common.Constants;
+import com.example.common.SystemString;
 import com.example.common.Result;
 import com.example.controller.dto.UserDTO;
 import com.example.service.IUserService;
@@ -20,7 +20,7 @@ public class AuthController {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
         if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
-            return Result.error(Constants.CODE_400, "参数错误");
+            return Result.error(SystemString.PARAM_ERROR, "参数错误");
         }
         UserDTO dto = userService.login(userDTO);
         return Result.success(dto);
@@ -31,7 +31,7 @@ public class AuthController {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
         if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
-            return Result.error(Constants.CODE_400, "参数错误");
+            return Result.error(SystemString.PARAM_ERROR, "参数错误");
         }
         return Result.success(userService.register(userDTO));
     }

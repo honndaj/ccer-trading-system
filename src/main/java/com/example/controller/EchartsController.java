@@ -3,14 +3,9 @@ package com.example.controller;
 import com.example.common.Result;
 import com.example.service.ICcerService;
 import com.example.service.IHistoryService;
-import com.example.service.IUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-
-import static cn.hutool.poi.excel.sax.AttributeName.t;
 
 @RestController
 @RequestMapping("/echarts")

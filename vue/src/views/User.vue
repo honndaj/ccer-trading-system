@@ -23,7 +23,7 @@
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="id" label="ID" width="80"></el-table-column>
             <el-table-column prop="username" label="用户名" width="140"></el-table-column>
-            <el-table-column prop="roleFlag" label="角色"></el-table-column>
+            <el-table-column prop="uniqueKey" label="角色"></el-table-column>
             <el-table-column prop="money" label="资金"></el-table-column>
             <el-table-column prop="companyName" label="公司名"></el-table-column>
             <el-table-column prop="address" label="地址"></el-table-column>
@@ -52,7 +52,7 @@
                     <el-input v-model="form.username" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="角色">
-                    <el-select clearable v-model="form.roleFlag" placeholder="请选择角色" style="width: 100%">
+                    <el-select clearable v-model="form.uniqueKey" placeholder="请选择角色" style="width: 100%">
                         <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.uniqueKey"></el-option>
                     </el-select>
                 </el-form-item>
@@ -170,7 +170,7 @@ export default {
         },
         delBatch() {
             let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
-            this.request.post("/user/del/batch", ids).then(res => {
+            this.request.post("/user/del/multi", ids).then(res => {
                 if (res.code == '200') {
                     this.$message.success("批量删除成功")
                     this.load()

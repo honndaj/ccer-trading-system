@@ -1,13 +1,12 @@
 package com.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.common.Constants;
+import com.example.common.SystemString;
 import com.example.entity.Ccer;
 import com.example.entity.History;
 import com.example.entity.Now;
 import com.example.entity.User;
 import com.example.exception.ServiceException;
-import com.example.mapper.CcerMapper;
 import com.example.mapper.NowMapper;
 import com.example.service.ICcerService;
 import com.example.service.IHistoryService;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * <p>
@@ -51,7 +49,7 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
             nowMapper.insert(now);
             ccerService.saveOrUpdateCcer(now.getUid(),  now.getCount().negate(), now.getArea(), now.getKind());
         }else {
-            throw new ServiceException(Constants.CODE_600, "您的CCER不足");
+            throw new ServiceException(SystemString.SERVICE_ERROR, "您的CCER不足");
         }
         return true;
     }
@@ -70,7 +68,7 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
             userService.saveMoney(to, now.getPrice().multiply(now.getCount()).negate());
             ccerService.saveOrUpdateCcer(to, now.getCount(), now.getArea(), now.getKind());
         } else {
-            throw new ServiceException(Constants.CODE_600, "您的资金不足");
+            throw new ServiceException(SystemString.SERVICE_ERROR, "您的资金不足");
         }
         addHistory(now, from, to);
         return true;
@@ -84,7 +82,7 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
             nowMapper.insert(now);
             userService.saveMoney(now.getUid(), now.getPrice().multiply(now.getCount()).negate());
         }else {
-            throw new ServiceException(Constants.CODE_600, "您的资金不足");
+            throw new ServiceException(SystemString.SERVICE_ERROR, "您的资金不足");
         }
         return true;
     }
@@ -103,7 +101,7 @@ public class NowServiceImpl extends ServiceImpl<NowMapper, Now> implements INowS
             ccerService.saveOrUpdateCcer(from, now.getCount().negate(), now.getArea(), now.getKind());
             userService.saveMoney(from, now.getPrice().multiply(now.getCount()));
         } else {
-            throw new ServiceException(Constants.CODE_600, "您的"+now.getArea()+now.getKind()+"CCER不足");
+            throw new ServiceException(SystemString.SERVICE_ERROR, "您的"+now.getArea()+now.getKind()+"CCER不足");
         }
         addHistory(now, from, to);
         return true;

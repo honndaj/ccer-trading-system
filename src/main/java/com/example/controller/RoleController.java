@@ -30,7 +30,6 @@ public class RoleController {
     @Resource
     private IRoleService roleService;
 
-    // 新增或者更新
     @PostMapping
     public Result save(@RequestBody Role role) {
         roleService.saveOrUpdate(role);
@@ -43,8 +42,8 @@ public class RoleController {
         return Result.success();
     }
 
-    @PostMapping("/del/batch")
-    public Result deleteBatch(@RequestBody List<Integer> ids) {
+    @PostMapping("/del/multi")
+    public Result deleteMultiple(@RequestBody List<Integer> ids) {
         roleService.removeByIds(ids);
         return Result.success();
     }

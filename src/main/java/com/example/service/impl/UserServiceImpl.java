@@ -1,11 +1,10 @@
 package com.example.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.common.Constants;
+import com.example.common.SystemString;
 import com.example.controller.dto.UserDTO;
 import com.example.entity.Menu;
 import com.example.entity.User;
@@ -15,9 +14,7 @@ import com.example.mapper.RoleMenuMapper;
 import com.example.mapper.UserMapper;
 import com.example.service.IMenuService;
 import com.example.service.IUserService;
-import com.example.utils.TokenUtils;
-import org.apache.xmlbeans.impl.jam.JParameter;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.utils.TokenGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,7 +34,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
-    private static final Log LOG = Log.get();
 
     @Resource
     private RoleMapper roleMapper;
@@ -56,14 +52,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User one = getUserInfo(userDTO);
         if(one != null) {
             BeanUtil.copyProperties(one, userDTO, true);
-            String token = TokenUtils.genToken(one.getId().toString(), one.getPassword());
+            String token = TokenGenerator.genToken(one.getId().toString(), one.getPassword());
             userDTO.setToken(token);
             String uniqueKey = one.getUniqueKey();
-            userDTO.setMenus(getRoleMenus(uniqueKey));
+            userDTO.setMenus(getUserAuthMenus(uniqueKey));
 
             return userDTO;
         }else {
-            throw new ServiceException(Constants.CODE_600, "用户名或密码错误");
+            throw new ServiceException(SystemString.SERVICE_ERROR, "用户名或密码错误");
         }
     }
 
@@ -75,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             BeanUtil.copyProperties(userDTO, one, true);
             save(one);
         }else {
-            throw new ServiceException(Constants.CODE_600, "用户已存在");
+            throw new ServiceException(SystemString.SERVICE_ERROR, "用户已存在");
         }
         return one;
     }
@@ -83,19 +79,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private User getUserInfo(UserDTO userDTO) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userDTO.getUsername());
-        queryWrapper.eq("password", userDTO.getPassword());//TODO necessary?
+        queryWrapper.eq("password", userDTO.getPassword());
         User one;
-        // 处理异常情况
+
         try{
             one = getOne(queryWrapper);
         } catch (Exception e){
-            LOG.error(e);
-            throw new ServiceException(Constants.CODE_500, "系统错误");
+            throw new ServiceException(SystemString.SYSTEM_ERROR, "系统错误");
         }
         return one;
     }
 
-    public List<Menu> getRoleMenus(String uniqueKey) {
+    public List<Menu> getUserAuthMenus(String uniqueKey) {
         Integer roleId = roleMapper.selectByUniqueKey(uniqueKey);
         List<Integer> menuids = roleMenuMapper.selectByRoleId(roleId);
         List<Menu> menus = new ArrayList<>();
@@ -123,9 +118,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             parentNodes.add(menuService.getById(pid));
         }
 
-        for (Menu menu : parentNodes) {
-            //子菜单
-            menu.setChildren(menus.stream().filter(m -> menu.getId().equals(m.getPid())).collect(Collectors.toList()));
+        for (Menu parentNode : parentNodes) {
+            parentNode.setChildren(menus.stream().filter(node -> parentNode.getId().equals(node.getPid())).collect(Collectors.toList()));
         }
         return parentNodes;
     }

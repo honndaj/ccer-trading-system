@@ -1,23 +1,17 @@
 package com.example.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.common.Constants;
-import com.example.entity.Dict;
-import com.example.mapper.DictMapper;
+import com.example.common.Result;
+import com.example.entity.IconMap;
+import com.example.entity.Menu;
+import com.example.mapper.IconMapMapper;
+import com.example.service.IMenuService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.common.Result;
-
-import com.example.service.IMenuService;
-import com.example.entity.Menu;
-
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -35,9 +29,8 @@ public class MenuController {
     private IMenuService menuService;
 
     @Resource
-    private DictMapper dictMapper;
+    private IconMapMapper iconMapMapper;
 
-    // 新增或者更新
     @PostMapping
     public Result save(@RequestBody Menu menu) {
         menuService.saveOrUpdate(menu);
@@ -50,8 +43,8 @@ public class MenuController {
         return Result.success();
     }
 
-    @PostMapping("/del/batch")
-    public Result deleteBatch(@RequestBody List<Integer> ids) {
+    @PostMapping("/del/multi")
+    public Result deleteMultiple(@RequestBody List<Integer> ids) {
         menuService.removeByIds(ids);
         return Result.success();
     }
@@ -80,9 +73,8 @@ public class MenuController {
 
     @GetMapping("/icons")
     public Result getIcons() {
-        QueryWrapper<Dict> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("type", Constants.DICT_TYPE_ICON);
-        return Result.success(dictMapper.selectList(queryWrapper));
+        QueryWrapper<IconMap> queryWrapper = new QueryWrapper<>();
+        return Result.success(iconMapMapper.selectList(queryWrapper));
     }
 }
 

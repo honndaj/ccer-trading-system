@@ -130,19 +130,6 @@ public class NowController {
         return Result.success(nowService.withDrawCcer(id));
     }
 
-    // 新增或者更新
-    @PostMapping
-    public Result save(@RequestBody Now now) {
-        nowService.saveOrUpdate(now);
-        return Result.success();
-    }
-
-    @PostMapping("/del/batch")
-    public Result deleteBatch(@RequestBody List<Integer> ids) {
-        nowService.removeByIds(ids);
-        return Result.success();
-    }
-
     @GetMapping
     public Result findAll() {
         return Result.success(nowService.list());

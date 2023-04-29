@@ -1,6 +1,6 @@
 package com.example.config;
 
-import com.example.config.interceptor.JwtInterceptor;
+import com.example.interceptor.UserTokenInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,8 +17,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public JwtInterceptor jwtInterceptor() {
-        return new JwtInterceptor();
+    public UserTokenInterceptor jwtInterceptor() {
+        return new UserTokenInterceptor();
     }
 
 }

@@ -14,25 +14,22 @@ public class CodeGenerator {
     private static void generate() {
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/carbon", "root", "1234")
                 .globalConfig(builder -> {
-                    builder.author("lzq") // 设置作者
-                            .enableSwagger() // 开启 swagger 模式
-                            .fileOverride() // 覆盖已生成文件
-                            .outputDir("D:\\Code\\workplace\\ccer-trading-system\\src\\main\\java"); // 指定输出目录
+                    builder.author("lzq")
+                            .fileOverride()
+                            .outputDir("D:\\Code\\workplace\\ccer-trading-system\\src\\main\\java");
                 })
                 .packageConfig(builder -> {
-                    builder.parent("com.example") // 设置父包名
-                            .moduleName(null) // 设置父包模块名
+                    builder.parent("com.example")
+                            .moduleName(null)
                             .pathInfo(Collections.singletonMap(OutputFile.mapperXml, "D:\\Code\\workplace\\ccer-trading-system\\src\\main\\resources\\mapper\\")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
                     builder.entityBuilder().enableLombok();
-//                    builder.mapperBuilder().enableMapperAnnotation().build(); //可以自动生成mapper上的@mapper注解
-                    builder.controllerBuilder().enableHyphenStyle()  // 开启驼峰转连字符
-                            .enableRestStyle();  // 开启生成@RestController 控制器
-                    builder.addInclude("sys_now") // 设置需要生成的表名
-                            .addTablePrefix("t_", "sys_"); // 设置过滤表前缀
+                    builder.controllerBuilder().enableHyphenStyle()  // 驼峰 -
+                            .enableRestStyle();
+                    builder.addInclude("sys_now")
+                            .addTablePrefix("sys_");
                 })
-//                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
 
     }
