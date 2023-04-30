@@ -8,7 +8,7 @@
                 <div id="barMonth" style="width: 431px; height: 345px"></div>
             </el-col>
         </el-row>
-        <el-row style="width: 300px; margin-left: 30px;">
+        <el-row style="width: 250px; margin-left: 30px;">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span>选择CCER的地区和种类</span>
