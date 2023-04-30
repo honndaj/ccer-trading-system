@@ -11,19 +11,19 @@
       <b style="color: white">CCER交易系统</b>
     </div>
     <div v-for="parentNode in parentNodes" :key="parentNode.id">
-      <div v-if="parentNode.path">
-        <el-menu-item :index="parentNode.path">
-          <i :class="parentNode.icon"></i> <span slot="title">{{ parentNode.name }}</span>
+      <div v-if="parentNode.menuRoute">
+        <el-menu-item :index="parentNode.menuRoute">
+          <i :class="parentNode.menuIcon"></i> <span slot="title">{{ parentNode.menuName }}</span>
         </el-menu-item>
       </div>
       <div v-else>
         <el-submenu :index="parentNode.id + ''">
           <template slot="title">
-            <i :class="parentNode.icon"></i> <span slot="title">{{ parentNode.name }}</span>
+            <i :class="parentNode.menuIcon"></i> <span slot="title">{{ parentNode.menuName }}</span>
           </template>
           <div  v-for="childNode in parentNode.children" :key="childNode.id">
-            <el-menu-item :index="childNode.path">
-              <i :class="childNode.icon"></i> <span slot="title">{{ childNode.name }}</span>
+            <el-menu-item :index="childNode.menuRoute">
+              <i :class="childNode.menuIcon"></i> <span slot="title">{{ childNode.menuName }}</span>
             </el-menu-item>
           </div>
         </el-submenu>
@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "Aside",
+  menu_name: "Aside",
   props: {
     isCollapse: Boolean,
     logoTextShow: Boolean,

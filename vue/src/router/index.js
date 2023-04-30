@@ -36,21 +36,20 @@ export const setRoutes = ()  => {
         const menus = JSON.parse(storeMenus)
         const manageRoute = {path: '/', name: "Manage",component: Manage, redirect: "/login", children: []}
         menus.forEach(menu => {
-            if(menu.path) {
-                let parentMenu = {path: menu.path.replace("/", ""), name: menu.name,
+            if(menu.menuRoute) {
+                let parentMenu = {path: menu.menuRoute.replace("/", ""), name: menu.menuName,
                 component: () => import ('../views/' + menu.viewPath + '.vue')}
                 manageRoute.children.push(parentMenu)
             }else if(menu.children.length) {
                 menu.children.forEach(menu => {
-                    if(menu.path) {
-                        let childMenu = {path: menu.path.replace("/", ""), name: menu.name,
+                    if(menu.menuRoute) {
+                        let childMenu = {path: menu.menuRoute.replace("/", ""), name: menu.menuName,
                         component: () => import ('../views/' + menu.viewPath + '.vue')}
                         manageRoute.children.push(childMenu)
                     }
                 })
             }
         })
-
         if(!router.getRoutes().map(v => v.name).includes("Manage"))
         router.addRoute(manageRoute)
     }

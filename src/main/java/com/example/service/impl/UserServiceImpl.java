@@ -100,11 +100,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //找出一级菜单
         List<Integer> parentNodeIds = new ArrayList<>();
         for(Menu menu : menus) {
-            if(menu.getPid() == null) {
+            if(menu.getParentId() == null) {
                 parentNodeIds.add(menu.getId());
             }
             else {
-                parentNodeIds.add(menu.getPid());
+                parentNodeIds.add(menu.getParentId());
             }
         }
         //排序加去重
@@ -119,7 +119,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 
         for (Menu parentNode : parentNodes) {
-            parentNode.setChildren(menus.stream().filter(node -> parentNode.getId().equals(node.getPid())).collect(Collectors.toList()));
+            parentNode.setChildren(menus.stream().filter(node -> parentNode.getId().equals(node.getParentId())).collect(Collectors.toList()));
         }
         return parentNodes;
     }

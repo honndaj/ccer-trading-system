@@ -18,8 +18,8 @@
             @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="name" label="角色名"></el-table-column>
-            <el-table-column prop="description" label="具体功能"></el-table-column>
+            <el-table-column prop="roleName" label="角色名"></el-table-column>
+            <el-table-column prop="detail" label="具体功能"></el-table-column>
             <el-table-column prop="uniqueKey" label="唯一标识符"></el-table-column>
             <el-table-column label="操作" width="280" align="center">
                 <template slot-scope="scope">
@@ -42,10 +42,10 @@
         <el-dialog title="角色信息" :visible.sync="dialogFormVisible" width="30%">
             <el-form label-width="80px" size="small">
                 <el-form-item label="角色名">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                    <el-input v-model="form.roleName" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="具体功能">
-                    <el-input v-model="form.description" autocomplete="off"></el-input>
+                    <el-input v-model="form.detail" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="唯一标识符">
                     <el-input v-model="form.uniqueKey" autocomplete="off"></el-input>
@@ -67,7 +67,7 @@
                       :default-checked-keys="checks"
                       >
                       <span class="custom-tree-node" slot-scope="{ node, data }">
-                          <span><i :class="data.icon"></i> {{ data.name }}</span>
+                          <span><i :class="data.menuIcon"></i> {{ data.menuName }}</span>
                       </span>
             </el-tree>
             <div slot="footer" class="dialog-footer">

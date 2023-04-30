@@ -31,18 +31,18 @@ public class Menu implements Serializable {
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
-    private String name;
+    private String menuName;
 
-    private String path;
+    private String menuRoute;
 
-    private String icon;
+    private String menuIcon;
 
-    private String description;
+    private String detail;
 
     @TableField(exist = false)
     private List<Menu> children;
 
-    private Integer pid;
+    private Integer parentId;
 
     private String viewPath;
 }

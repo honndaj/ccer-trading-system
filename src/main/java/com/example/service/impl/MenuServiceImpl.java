@@ -22,17 +22,17 @@ import java.util.stream.Collectors;
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
     @Override
-    public List<Menu> findMenus(String name) {
+    public List<Menu> findAllMenus(String menuName) {
         QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
-        if(StrUtil.isNotBlank(name)) {
-            queryWrapper.like("name", name);
+        if(StrUtil.isNotBlank(menuName)) {
+            queryWrapper.like("name", menuName);
         }
         List<Menu> list = list(queryWrapper);
         // 父级菜单
-        List<Menu> parentNodes = list.stream().filter(menu -> menu.getPid() == null).collect(Collectors.toList());
+        List<Menu> parentNodes = list.stream().filter(menu -> menu.getParentId() == null).collect(Collectors.toList());
         for (Menu menu : parentNodes) {
             //子菜单
-            menu.setChildren(list.stream().filter(m -> menu.getId().equals(m.getPid())).collect(Collectors.toList()));
+            menu.setChildren(list.stream().filter(m -> menu.getId().equals(m.getParentId())).collect(Collectors.toList()));
         }
         return parentNodes;
     }

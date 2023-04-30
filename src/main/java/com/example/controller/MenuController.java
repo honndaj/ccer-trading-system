@@ -50,8 +50,8 @@ public class MenuController {
     }
 
     @GetMapping
-    public Result findAll(@RequestParam(defaultValue = "") String name) {
-        return Result.success(menuService.findMenus(name));
+    public Result findAll(@RequestParam(defaultValue = "") String menuName) {
+        return Result.success(menuService.findAllMenus(menuName));
     }
 
     @GetMapping("/{id}")
@@ -62,11 +62,11 @@ public class MenuController {
     @GetMapping("/page")
     public Result findPage(@RequestParam Integer pageNum,
                            @RequestParam Integer pageSize,
-                           @RequestParam(defaultValue = "") String name) {
+                           @RequestParam(defaultValue = "") String menuName) {
         QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
-        if (!"".equals(name)) {
-            queryWrapper.like("name", name);
+        if (!"".equals(menuName)) {
+            queryWrapper.like("menu_name", menuName);
         }
         return Result.success(menuService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }

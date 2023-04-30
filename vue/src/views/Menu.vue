@@ -19,18 +19,18 @@
             @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="name" label="（子）菜单名"></el-table-column>
-            <el-table-column prop="path" label="路由名称"></el-table-column>
+            <el-table-column prop="menuName" label="（子）菜单名"></el-table-column>
+            <el-table-column prop="menuRoute" label="路由名称"></el-table-column>
             <el-table-column prop="viewPath" label="视图路径"></el-table-column>
             <el-table-column label="对应图标" class-name="fontSize18" align="center" label-class-name="fontSize12">
                 <template slot-scope="scope">
-                <span :class="scope.row.icon" />
+                <span :class="scope.row.menuIcon" />
                 </template>
             </el-table-column>
-            <el-table-column prop="description" label="具体功能"></el-table-column>
+            <el-table-column prop="detail" label="具体功能"></el-table-column>
             <el-table-column label="操作" width="300" align="center" >
                 <template slot-scope="scope">
-                    <el-button type="primary" @click="handleAdd(scope.row.id)" v-if="!scope.row.pid && !scope.row.path"><i class="el-icon-plus"></i></el-button>
+                    <el-button type="primary" @click="handleAdd(scope.row.id)" v-if="!scope.row.parentId && !scope.row.menuRoute"><i class="el-icon-plus"></i></el-button>
                     <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
                     <el-popconfirm class="ml-5" confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
                         icon-color="red" title="您确定删除吗？" @confirm="del(scope.row.id)">
@@ -42,24 +42,24 @@
 
         <el-dialog title="菜单信息" :visible.sync="dialogFormVisible" width="30%">
             <el-form label-width="80px" size="small">
-                <el-form-item label="名称">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                <el-form-item label="（子）菜单名">
+                    <el-input v-model="form.menuName" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="路径">
-                    <el-input v-model="form.path" autocomplete="off"></el-input>
+                <el-form-item label="路由名称">
+                    <el-input v-model="form.menuRoute" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="视图路径">
                     <el-input v-model="form.viewPath" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="图标">
-                    <el-select clearable v-model="form.icon" placeholder="请选择" style="width: 100%">
+                <el-form-item label="对应图标">
+                    <el-select clearable v-model="form.menuIcon" placeholder="请选择" style="width: 100%">
                         <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.value">
                         <i :class="item.value" /> {{ item.name }}
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="描述">
-                    <el-input v-model="form.description" autocomplete="off"></el-input>
+                <el-form-item label="具体功能">
+                    <el-input v-model="form.detail" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -112,11 +112,11 @@ export default {
                 }
             })
         },
-        handleAdd(pid) {
+        handleAdd(parentId) {
             this.dialogFormVisible = true
             this.form = {}
-            if(pid) {
-                this.form.pid = pid
+            if(parentId) {
+                this.form.parentId = parentId
             }
             this.request.get("/menu/icons").then(res => {
                 this.options = res.data

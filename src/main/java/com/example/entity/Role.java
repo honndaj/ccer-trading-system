@@ -28,9 +28,9 @@ public class Role implements Serializable {
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
-    private String name;
+    private String roleName;
 
-    private String description;
+    private String detail;
 
     private String uniqueKey;
 
