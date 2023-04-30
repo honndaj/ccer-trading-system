@@ -41,13 +41,13 @@ export default {
     this.getUser()
   },
   methods: {
-    collapse() {  // 点击收缩按钮触发
+    collapse() {
       this.isCollapse = !this.isCollapse
-      if (this.isCollapse) {  // 收缩
+      if (this.isCollapse) {
         this.sideWidth = 64
         this.collapseBtnClass = 'el-icon-s-unfold'
         this.logoTextShow = false
-      } else {   // 展开
+      } else {
         this.sideWidth = 200
         this.collapseBtnClass = 'el-icon-s-fold'
         this.logoTextShow = true
@@ -56,9 +56,7 @@ export default {
     getUser() {
       let username = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).username : ""
       if (username) {
-        // 从后台获取User数据
         this.request.get("/user/username/" + username).then(res => {
-          // 重新赋值后台的最新User数据
           this.user = res.data
         })
       }

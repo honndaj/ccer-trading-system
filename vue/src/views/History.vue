@@ -98,7 +98,7 @@ export default {
             this.multipleSelection = val
         },
         delBatch() {
-            let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
+            let ids = this.multipleSelection.map(v => v.id)
             this.request.post("/history/del/multi", ids).then(res => {
                 if (res.code == '200') {
                     this.$message.success("批量删除成功")

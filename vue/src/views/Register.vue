@@ -47,7 +47,7 @@
     methods: {
       login() {
         this.$refs['userForm'].validate((valid) => {
-          if (valid) {  // 表单校验合法
+          if (valid) {
             if (this.user.password !== this.user.confirmPassword) {
               this.$message.error("两次输入的密码不一致")
               return false

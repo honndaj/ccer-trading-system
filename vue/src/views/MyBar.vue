@@ -101,8 +101,8 @@ export default {
                         type: 'category',
                         data: res.data.map(item => item.name),
                         axisLabel: {
-                            interval: 0, // 设置为0，以显示所有标签
-                            rotate: 45, // 如果标签重叠，您可以尝试旋转标签
+                            interval: 0,
+                            rotate: 45,
                         },
                     },
                     yAxis: {

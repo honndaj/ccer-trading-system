@@ -6,9 +6,7 @@ const request = axios.create({
     timeout: 5000
 })
 
-// request 拦截器
-// 可以自请求发送前对请求做一些处理
-// 比如统一加token，对请求参数统一加密
+//处理发出的request
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
     let user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null
@@ -20,16 +18,10 @@ request.interceptors.request.use(config => {
     return Promise.reject(error)
 });
 
-// response 拦截器
-// 可以在接口响应后统一处理结果
+// 处理返回的response
 request.interceptors.response.use(
     response => {
         let res = response.data;
-        // 如果是返回的文件
-        if (response.config.responseType === 'blob') {
-            return res
-        }
-        // 兼容服务端返回的字符串数据
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
         }
@@ -42,7 +34,7 @@ request.interceptors.response.use(
         return res;
     },
     error => {
-        console.log('err' + error) // for debug
+        console.log('err' + error)
         return Promise.reject(error)
     }
 )

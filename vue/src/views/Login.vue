@@ -48,7 +48,7 @@ export default {
                 if (valid) {  // 表单校验合法
                     this.request.post("/auth/login", this.user).then(res => {
                         if (res.code === '200') {
-                            localStorage.setItem("user", JSON.stringify(res.data))  // 存储用户信息到浏览器 username & password
+                            localStorage.setItem("user", JSON.stringify(res.data))
                             localStorage.setItem("menus", JSON.stringify(res.data.menus))
                             setRoutes()
                             this.$router.push("/home")
