@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="10">
+            <el-col :span="14">
                 <div id="line" style="width: 500px; height: 400px"></div>
             </el-col>
-            <el-col :span="11">
+            <el-col :span="10">
                 <div id="kindPie" style="width: 431px; height: 345px"></div>
             </el-col>
         </el-row>

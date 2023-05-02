@@ -49,12 +49,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public UserDTO login(UserDTO userDTO) {
-        User one = getUserInfo(userDTO);
-        if(one != null) {
-            BeanUtil.copyProperties(one, userDTO, true);
-            String token = TokenGenerator.genToken(one.getId().toString(), one.getPassword());
-            userDTO.setToken(token);
-            String uniqueKey = one.getUniqueKey();
+        User user = getUserByUserDTO(userDTO);
+        if(user != null) {
+            BeanUtil.copyProperties(user, userDTO, true);
+            userDTO.setToken(TokenGenerator.genToken(user.getId().toString(), user.getPassword()));
+            String uniqueKey = user.getUniqueKey();
             userDTO.setMenus(getUserAuthMenus(uniqueKey));
 
             return userDTO;
@@ -65,29 +64,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User register(UserDTO userDTO) {
-        User one = getUserInfo(userDTO);
-        if(one == null) {
-            one = new User();
-            BeanUtil.copyProperties(userDTO, one, true);
-            save(one);
+        User user = getUserByUserDTO(userDTO);
+        if(user == null) {
+            user = new User();
+            BeanUtil.copyProperties(userDTO, user, true);
+            save(user);
         }else {
             throw new ServiceException(SystemString.SERVICE_ERROR, "用户已存在");
         }
-        return one;
+        return user;
     }
     
-    private User getUserInfo(UserDTO userDTO) {
+    private User getUserByUserDTO(UserDTO userDTO) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userDTO.getUsername());
         queryWrapper.eq("password", userDTO.getPassword());
-        User one;
+        User user;
 
         try{
-            one = getOne(queryWrapper);
+            user = getOne(queryWrapper);
         } catch (Exception e){
             throw new ServiceException(SystemString.SYSTEM_ERROR, "系统错误");
         }
-        return one;
+        return user;
     }
 
     public List<Menu> getUserAuthMenus(String uniqueKey) {
