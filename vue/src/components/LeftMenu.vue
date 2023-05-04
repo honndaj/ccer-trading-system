@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  menu_name: "Aside",
+  menu_name: "LeftMenu",
   props: {
     isCollapse: Boolean,
     logoTextShow: Boolean,

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from "@/store";
 
-import Manage from '../views/Manage.vue'
+import Auth from '../views/Auth.vue'
 
 Vue.use(VueRouter)
 
@@ -34,7 +34,7 @@ export const setRoutes = ()  => {
     const storeMenus = localStorage.getItem("menus")
     if(storeMenus) {
         const menus = JSON.parse(storeMenus)
-        const manageRoute = {path: '/', name: "Manage",component: Manage, redirect: "/login", children: []}
+        const manageRoute = {path: '/', name: "Auth",component: Auth, redirect: "/login", children: []}
         menus.forEach(menu => {
             if(menu.menuRoute) {
                 let parentMenu = {path: menu.menuRoute.replace("/", ""), name: menu.menuName,
@@ -50,7 +50,7 @@ export const setRoutes = ()  => {
                 })
             }
         })
-        if(!router.getRoutes().map(v => v.name).includes("Manage"))
+        if(!router.getRoutes().map(v => v.name).includes("Auth"))
         router.addRoute(manageRoute)
     }
 }

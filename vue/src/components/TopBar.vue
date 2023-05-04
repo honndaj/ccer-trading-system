@@ -25,7 +25,7 @@
 <script>
 
 export default {
-    name: "Header",
+    name: "TopBar",
     props: {
         collapseBtnClass: String,
         collapse: Function,

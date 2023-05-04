@@ -2,12 +2,12 @@
   <el-container style="min-height: 100vh">
 
     <el-aside :width="sideWidth + 'px'" style="box-shadow: 2px 0 6px rgb(0 21 41 / 35%);">
-      <Aside :isCollapse="isCollapse" :logoTextShow="logoTextShow"/>
+      <LeftMenu :isCollapse="isCollapse" :logoTextShow="logoTextShow"/>
     </el-aside>
 
     <el-container>
       <el-header style="border-bottom: 1px solid #ccc;">
-        <Header :collapseBtnClass="collapseBtnClass" :collapse="collapse"/>
+        <TopBar :collapseBtnClass="collapseBtnClass" :collapse="collapse"/>
       </el-header>
 
       <el-main>
@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import Aside from '../components/Aside.vue'
-import Header from '../components/Header.vue'
+import LeftMenu from '../components/LeftMenu.vue'
+import TopBar from '../components/TopBar.vue'
 
 export default {
-  name: 'Manage',
+  name: 'Auth',
   data() {
     return {
       collapseBtnClass: 'el-icon-s-fold',
@@ -34,8 +34,8 @@ export default {
     }
   },
   components: {
-    Aside,
-    Header
+    LeftMenu,
+    TopBar
   },
   created() {
     this.getUser()
